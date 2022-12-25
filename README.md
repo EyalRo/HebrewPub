@@ -1,4 +1,4 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/4de15abb-69a1-47f9-afdd-7b8a1fd76f1c/deploy-status)](https://app.netlify.com/sites/hebrewpub/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/69031416-8130-4206-ba7e-a62a8ce45ff4/deploy-status)](https://app.netlify.com/sites/hebrewpub/deploys)
 
 <div dir="rtl">
 
