@@ -12,6 +12,6 @@
 git clone https://github.com/EyalRo/HebrewPub.git
 cd HebrewPub
 npm install
-npm run start
+npm start
 ```
 </div>
