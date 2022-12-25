@@ -1,0 +1,76 @@
+header {
+  font-size: 5vw;
+  background-color: hsl(272.3, 6.7%, 38.2%);
+  color: white;
+  width: 100%;
+  padding: 1rem;
+
+  a,
+  a:link,
+  a:visited {
+    color: white;
+    text-decoration: none;
+  }
+
+  #title {
+    width: 100%;
+    text-align: center;
+  }
+
+  #menuButton {
+    position: absolute;
+    margin: 0;
+    padding: calc(min(5vw, 5vh));
+    top: 0;
+    right: 0;
+
+    button {
+      margin: 0;
+      background-color: inherit;
+      border: none;
+
+      img {
+        height: 5vw;
+        filter: invert(1);
+        margin: 0;
+      }
+    }
+  }
+
+  #openMenu {
+    direction: rtl;
+    background-color: white;
+    border-style: solid;
+    min-height: 50px;
+    min-width: 50px;
+    color: black;
+    font-size: 1rem;
+    width: fit-content;
+    right: 25px;
+    position: absolute;
+    padding: 10px;
+    border-radius: 2px;
+    overflow: hidden;
+    transition: all .5s ease-in-out;
+  }
+
+  ul {
+    list-style: none;
+
+    .notReady {
+      color: gray;
+      text-decoration: line-through;
+    }
+  }
+}
+
+@keyframes expandAnimation {
+  from {
+    max-height: 0%;
+    opacity: 0;
+  }
+  to {
+    max-height: 100%;
+    opacity: 1;
+  }
+}
