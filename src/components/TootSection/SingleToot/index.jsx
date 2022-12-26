@@ -5,9 +5,9 @@ import { UserIdentity } from "./UserIdentity"
 import useIntersection from "./useIntersection"
 import axios from "axios"
 
-export const Toot = ({ toot, addToots }) => {
+export const Toot = ({ toot, addToots, loadOldToots }) => {
   const ref = useRef()
-  const inViewport = useIntersection(ref, "0px")
+  const inViewport = useIntersection(ref, "100px")
   const url = new URL(toot.url)
 
   // ////////////////////////////////////////////////////////////////////////////////
@@ -44,6 +44,7 @@ export const Toot = ({ toot, addToots }) => {
   useEffect(() => {
     if (tootSeen && url !== undefined) {
       getContext()
+      loadOldToots(url.hostname, true)
     }
   }, [tootSeen])
 
