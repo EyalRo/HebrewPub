@@ -13,10 +13,10 @@ export const TootSection = () => {
     setTootMap(tootMap.set(k, v))
   }
   // //////////////////////////////////////////////////////////
-  // const [tootPointers, setPointers] = useState(new Map())
-  // const updatePointers = (k, v) => {
-  //   setPointers(tootPointers.set(k, v))
-  // }
+  const [tootPointers, setPointers] = useState(new Map())
+  const updatePointers = (k, v) => {
+    setPointers(tootPointers.set(k, v))
+  }
   // //////////////////////////////////////////////////////////
 
   const addToots = t => {
@@ -45,8 +45,31 @@ export const TootSection = () => {
 
   const loadNewToots = () => {
     for (const site of siteList) {
+      const pointers = tootPointers.get(site)
       axios
-        .get(`https://${site}/api/v1/timelines/public?local=true`)
+        .get(`https://${site}/api/v1/timelines/public?local=true&limit=15&min_id=${pointers[0]}`)
+        .then(function (response) {
+          updateMap(site, response.data)
+          var newList = []
+          tootMap.forEach(function (value) {
+            newList = newList.concat(value)
+          })
+          addToots(newList)
+        })
+        .catch(function (error) {
+          // console.log(error)
+        })
+        .then(function () {
+          // always executed
+        })
+    }
+  }
+
+  const loadOldToots = () => {
+    for (const site of siteList) {
+      const pointers = tootPointers.get(site)
+      axios
+        .get(`https://${site}/api/v1/timelines/public?local=true&limit=15&max_id=${pointers[1]}`)
         .then(function (response) {
           updateMap(site, response.data)
           var newList = []
@@ -68,7 +91,15 @@ export const TootSection = () => {
     loadNewToots()
   }, [])
 
-  useEffect(() => {}, [tootMap])
+  useEffect(() => {
+    siteList.forEach(site => {
+      const siteToots = tootList.filter(
+        toot => new URL(toot.url).hostname === site
+      )
+      const p = [siteToots[0].id, siteToots[siteToots.length - 1].id]
+      updatePointers(site, p)
+    })
+  }, [tootList])
 
   return (
     <div id="allToots">
