@@ -9,11 +9,6 @@ export const Toot = ({ toot, addToots }) => {
   const ref = useRef()
   const inViewport = useIntersection(ref, "0px")
   const url = new URL(toot.url)
-  // //////////////////////
-  // Next/Back button IDs
-  // //////////////////////
-  const [nextButtonID, setNext] = useState()
-  const [backButtonID, setBack] = useState()
 
   // ////////////////////////////////////////////////////////////////////////////////
   // context includes cool stuff like the entire thread including all of the message objects.
@@ -34,7 +29,7 @@ export const Toot = ({ toot, addToots }) => {
           response.data.descendants.length > 0 ||
           response.data.ancestors.length > 0
         ) {
-          // addToots(response.data.ancestors)
+         // addToots(response.data.ancestors)
           setContext(response.data)
         }
       })

@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Toot } from "./SingleToot"
 import axios from "axios"
-// import axiosThrottle from "axios-request-throttle"
 import { siteList } from "../siteList"
-
-// axiosThrottle.use(axios, { requestsPerSecond: 5 })
 
 export const TootSection = () => {
   const [tootList, setTootList] = useState([])
@@ -12,12 +9,11 @@ export const TootSection = () => {
   const updateMap = (k, v) => {
     setTootMap(tootMap.set(k, v))
   }
-  // //////////////////////////////////////////////////////////
+
   const [tootPointers, setPointers] = useState(new Map())
   const updatePointers = (k, v) => {
     setPointers(tootPointers.set(k, v))
   }
-  // //////////////////////////////////////////////////////////
 
   const addToots = t => {
     const newList = [
@@ -45,9 +41,15 @@ export const TootSection = () => {
 
   const loadNewToots = () => {
     for (const site of siteList) {
+      var url = `https://${site}/api/v1/timelines/public?local=true&limit=15`
       const pointers = tootPointers.get(site)
+      var suffix = ""
+      if (pointers !== undefined) {
+        suffix = `&min_id=${pointers[0]}`
+      }
+
       axios
-        .get(`https://${site}/api/v1/timelines/public?local=true&limit=15&min_id=${pointers[0]}`)
+        .get(url)
         .then(function (response) {
           updateMap(site, response.data)
           var newList = []
@@ -67,9 +69,15 @@ export const TootSection = () => {
 
   const loadOldToots = () => {
     for (const site of siteList) {
+      var url = `https://${site}/api/v1/timelines/public?local=true&limit=15`
       const pointers = tootPointers.get(site)
+      var suffix = ""
+      if (pointers !== undefined) {
+        suffix = `&min_id=${pointers[1]}`
+      }
+
       axios
-        .get(`https://${site}/api/v1/timelines/public?local=true&limit=15&max_id=${pointers[1]}`)
+        .get(`https://${site}/api/v1/timelines/public?local=true&limit=15`)
         .then(function (response) {
           updateMap(site, response.data)
           var newList = []
@@ -96,8 +104,10 @@ export const TootSection = () => {
       const siteToots = tootList.filter(
         toot => new URL(toot.url).hostname === site
       )
-      const p = [siteToots[0].id, siteToots[siteToots.length - 1].id]
-      updatePointers(site, p)
+      if (siteToots[0] !== undefined) {
+        const p = [siteToots[0].id, siteToots[siteToots.length - 1].id]
+        updatePointers(site, p)
+      }
     })
   }, [tootList])
 
