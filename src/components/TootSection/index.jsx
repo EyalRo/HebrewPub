@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react"
 
 import { Toot } from "./SingleToot"
 import axios from "axios"
 import { siteList } from "../siteList"
+import useIntersection from "./SingleToot/useIntersection"
 
 export const TootSection = () => {
+  const ref = useRef()
+  const inViewport = useIntersection(ref, "0px")
+
   const [tootList, setTootList] = useState([])
   const [tootMap, setTootMap] = useState(new Map())
   const updateMap = (k, v) => {
@@ -50,7 +54,7 @@ export const TootSection = () => {
       }
 
       axios
-        .get(url)
+        .get(url + suffix)
         .then(function (response) {
           updateMap(site, response.data)
           var newList = []
@@ -74,11 +78,11 @@ export const TootSection = () => {
       const pointers = tootPointers.get(site)
       var suffix = ""
       if (pointers !== undefined) {
-        suffix = `&min_id=${pointers[1]}`
+        suffix = `&max_id=${pointers[1]}`
       }
 
       axios
-        .get(`https://${site}/api/v1/timelines/public?local=true&limit=15`)
+        .get(url + suffix)
         .then(function (response) {
           updateMap(site, response.data)
           var newList = []
@@ -112,6 +116,12 @@ export const TootSection = () => {
     })
   }, [tootList])
 
+  useEffect(() => {
+    if (inViewport) {
+      loadOldToots()
+    }
+  }, [inViewport])
+
   return (
     <div id="allToots">
       <button
@@ -126,6 +136,7 @@ export const TootSection = () => {
       {tootList.map(toot => (
         <Toot toot={toot} key={`toot-${toot.id}`} addToots={addToots} />
       ))}
+      <div id={"footer"} ref={ref}></div>
     </div>
   )
 }
