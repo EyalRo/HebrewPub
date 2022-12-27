@@ -29,12 +29,13 @@ export const Toot = ({ toot, addToots, loadOldToots }) => {
           response.data.descendants.length > 0 ||
           response.data.ancestors.length > 0
         ) {
-         // addToots(response.data.ancestors)
+          addToots([...response.data.ancestors, ...response.data.descendants])
           setContext(response.data)
         }
       })
       .catch(function (error) {
         //console.log(error)
+        setSeen(false)
       })
       .then(function () {
         // window.scrollTo(0, 0)
