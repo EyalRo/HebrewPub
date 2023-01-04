@@ -7,7 +7,11 @@
   margin: 20px;
   background: rgb(53, 31, 61);
   color: white;
-  transition: all .5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+
+  a {
+    color: white;
+  }
 
   .descendants {
     display: flex;
