@@ -7,7 +7,7 @@ import axios from "axios"
 
 export const Toot = ({ toot, addToots, loadOldToots }) => {
   const ref = useRef()
-  const inViewport = useIntersection(ref, "100px")
+  const inViewport = useIntersection(ref, "500px")
   const url = new URL(toot.url)
 
   // ////////////////////////////////////////////////////////////////////////////////

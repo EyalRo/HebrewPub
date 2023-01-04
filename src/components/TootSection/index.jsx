@@ -43,7 +43,7 @@ export const TootSection = () => {
 
   const loadNewToots = () => {
     for (const site of siteList) {
-      var url = `https://${site}/api/v1/timelines/public?local=true&limit=40`
+      var url = `https://${site}/api/v1/timelines/public?local=true&limit=10`
       const pointers = tootPointers.get(site)
       var suffix = ""
       if (pointers !== undefined) {
