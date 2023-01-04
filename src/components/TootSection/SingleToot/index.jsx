@@ -10,11 +10,6 @@ export const Toot = ({ toot, addToots, loadOldToots }) => {
   const inViewport = useIntersection(ref, "500px")
   const url = new URL(toot.url)
 
-  // ////////////////////////////////////////////////////////////////////////////////
-  // context includes cool stuff like the entire thread including all of the message objects.
-  //        ...we should make show-thread functionlity
-  // ////////////////////////////////////////////////////////////////////////////////
-
   const [tootSeen, setSeen] = useState(false)
   const [context, setContext] = useState({
     ancestors: [],
@@ -94,16 +89,12 @@ export const Toot = ({ toot, addToots, loadOldToots }) => {
         פיברוטים ${toot.favourites_count} בוסטים ${toot.reblogs_count} תגובות ${toot.replies_count}`}
       </div>
       <div className="ancestors">
-        {context.ancestors[0] && (
-          <a
-            href={`#${context.ancestors[0].id}`}
-            onClick={function () {
-              addToots(context.ancestors)
-            }}
-          >
-            👇קודם בשרשור
-          </a>
-        )}
+        {context.ancestors.map(t => (
+          <div className="toot" key={t.id}>
+            {t.account.acct}
+            <TootBody toot={t}/>
+          </div>
+        ))}
       </div>
     </div>
   )
