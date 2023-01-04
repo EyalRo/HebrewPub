@@ -21,6 +21,17 @@
 
   .ancestors {
     margin-top: 12px;
+    .toot {
+      .identity {
+        display: flex;
+        gap: 12px;
+        height: 50px;
+        overflow: hidden;
+        .avatar {
+          width: 50px;
+        }
+      }
+    }
   }
 
   .ancestors,

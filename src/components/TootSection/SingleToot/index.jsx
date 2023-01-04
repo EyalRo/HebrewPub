@@ -89,10 +89,11 @@ export const Toot = ({ toot, addToots, loadOldToots }) => {
         פיברוטים ${toot.favourites_count} בוסטים ${toot.reblogs_count} תגובות ${toot.replies_count}`}
       </div>
       <div className="ancestors">
-        {context.ancestors.map(t => (
+        {context.ancestors.slice(-2).reverse().map(t => (
           <div className="toot" key={t.id}>
-            {t.account.acct}
-            <TootBody toot={t}/>
+            <UserIdentity toot={t} />
+            <TootBody toot={t} />
+            <a href={`#${t.id}`}>אל החצרוץ המקורי 👇</a>
           </div>
         ))}
       </div>
