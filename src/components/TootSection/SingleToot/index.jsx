@@ -64,6 +64,7 @@ export const Toot = ({ toot, addToots, loadOldToots }) => {
             return (
               <div style={{ flex: 1 }} key={`rep-to-${descendant.id}`}>
                 <a
+                  className={"threadButton"}
                   href={`#${descendant.id}`}
                   onClick={function () {
                     addToots(context.descendants)
@@ -89,13 +90,32 @@ export const Toot = ({ toot, addToots, loadOldToots }) => {
         פיברוטים ${toot.favourites_count} בוסטים ${toot.reblogs_count} תגובות ${toot.replies_count}`}
       </div>
       <div className="ancestors">
-        {context.ancestors.slice(-2).reverse().map(t => (
-          <div className="toot" key={t.id}>
-            <UserIdentity toot={t} />
-            <TootBody toot={t} />
-            <a href={`#${t.id}`}>אל החצרוץ המקורי 👇</a>
+        {context.ancestors.length > 1 && (
+          <div
+            className="toot"
+            key={context.ancestors[context.ancestors.length - 1].id}
+          >
+            <UserIdentity
+              toot={context.ancestors[context.ancestors.length - 1]}
+            />
+            <TootBody toot={context.ancestors[context.ancestors.length - 1]} />
+            <a
+              className={"threadButton"}
+              href={`#${context.ancestors[context.ancestors.length - 1].id}`}
+            >
+              הקודם בשרשור 👇
+            </a>
           </div>
-        ))}
+        )}
+        {context.ancestors.length > 0 && (
+          <div className="toot" key={context.ancestors[0].id}>
+            <UserIdentity toot={context.ancestors[0]} />
+            <TootBody toot={context.ancestors[0]} />
+            <a className={"threadButton"} href={`#${context.ancestors[0].id}`}>
+              הראשון בשרשור🌀
+            </a>
+          </div>
+        )}
       </div>
     </div>
   )
