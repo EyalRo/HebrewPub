@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { TextWithEmojis } from "../../TextWithEmojies"
+import Masonry from "react-responsive-masonry"
 
 export const TootBody = ({ toot }) => {
   const [hidden, setHidden] = useState(toot.spoiler_text.length > 0)
@@ -22,11 +23,14 @@ export const TootBody = ({ toot }) => {
       )}
       {hidden ? null : (
         <div className="content">
-          <TextWithEmojis text={toot.content} tootsite={toot.site}></TextWithEmojis>
+          <TextWithEmojis
+            text={toot.content}
+            tootsite={toot.site}
+          ></TextWithEmojis>
         </div>
       )}
       {toot.media_attachments.length > 0 && (
-        <div className="media">
+        <Masonry columnsCount={Math.min( toot.media_attachments.length,3)} gutter="10px">
           {toot.media_attachments.map(e => (
             <div className="image" key={e.id}>
               {e.type === "image" && (
@@ -59,7 +63,7 @@ export const TootBody = ({ toot }) => {
               )}
             </div>
           ))}
-        </div>
+        </Masonry>
       )}
     </div>
   )

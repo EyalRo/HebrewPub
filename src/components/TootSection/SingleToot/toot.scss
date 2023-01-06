@@ -127,6 +127,10 @@
     text-align: center;
     color: white;
 
+    img {
+      max-height: 50vh;
+    }
+
     .centered {
       position: absolute;
       top: 30%;
