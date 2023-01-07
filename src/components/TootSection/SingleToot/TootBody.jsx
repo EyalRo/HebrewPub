@@ -32,52 +32,46 @@ export const TootBody = ({ toot }) => {
         </div>
       )}
       {toot.media_attachments.length > 0 && (
-        <Masonry
-          columnsCount={Math.min(
-            toot.media_attachments.length,
-            isMobile ? 2 : 3
-          )}
-          gutter="1px"
+        <button
+          className="centered"
+          onClick={() => {
+            setBlur(!blurImage)
+          }}
         >
-          {toot.media_attachments.map((e, index) => (
-            <>
-              {e.type === "image" && (
-                <>
-                  <img
-                    key={`i-${e.id}-${index}`}
-                    className={"tootImg"}
-                    src={e.preview_url}
-                    alt={"media attachment"}
-                    style={{ filter: `blur(${blurImage ? "1.5rem" : 0})` }}
-                  />
-                  {blurImage === true && (
-                    <button
-                      key={`button-${e.id}-${index}`}
-                      className="centered"
-                      onClick={() => {
-                        setBlur(!blurImage)
-                      }}
-                    >
-                      אזהרת תוכן 👁️👁️👁️
-                    </button>
-                  )}
-                </>
-              )}
-              {e.type === "gifv" && (
-                <video
-                  src={e.url}
-                  key={`v-${e.id}-${index}`}
-                  alt={"media attachment"}
-                  autoPlay
-                  loop
-                  type="video/mp4"
-                  style={{ maxWidth: "100%" }}
-                />
-              )}
-            </>
-          ))}
-        </Masonry>
+          הצג\הסתר
+        </button>
       )}
+      <Masonry
+        columnsCount={Math.min(toot.media_attachments.length, isMobile ? 2 : 3)}
+        gutter="1px"
+      >
+        {toot.media_attachments
+          .filter(a => a.type === "image")
+          .map((e, index) => (
+            <img
+              className={"tootImg"}
+              key={`i-${e.id}-${index}`}
+              src={e.preview_url}
+              alt={"media attachment"}
+              style={{ filter: `blur(${blurImage ? "1.5rem" : 0})` }}
+            />
+          ))}
+
+        {toot.media_attachments
+          .filter(a => a.type === "gifv")
+          .map((e, index) => (
+            <video
+              className="tootVid"
+              src={e.url}
+              key={`v-${e.id}-${index}`}
+              alt={"media attachment"}
+              autoPlay
+              loop
+              type="video/mp4"
+              style={{ filter: `blur(${blurImage ? "1.5rem" : 0})` }}
+            />
+          ))}
+      </Masonry>
     </div>
   )
 }

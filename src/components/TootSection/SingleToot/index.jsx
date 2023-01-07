@@ -103,8 +103,9 @@ export const Toot = ({ toot, addToots, loadOldToots }) => {
               className={"threadButton"}
               href={`#${context.ancestors[context.ancestors.length - 1].id}`}
             >
-              הקודם בשרשור 👇
+              הקודם בשרשור👇
             </a>
+            |
           </div>
         )}
         {context.ancestors.length > 0 && (
