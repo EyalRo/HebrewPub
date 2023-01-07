@@ -1,10 +1,5 @@
 import React, { useState } from "react"
-import {
-  BrowserView,
-  MobileView,
-  isBrowser,
-  isMobile,
-} from "react-device-detect"
+import { isMobile } from "react-device-detect"
 
 import { TextWithEmojis } from "../../TextWithEmojies"
 import Masonry from "react-responsive-masonry"
@@ -44,12 +39,12 @@ export const TootBody = ({ toot }) => {
           )}
           gutter="1px"
         >
-          {toot.media_attachments.map(e => (
+          {toot.media_attachments.map((e, index) => (
             <>
               {e.type === "image" && (
                 <>
                   <img
-                    key={e.id}
+                    key={`i-${e.id}-${index}`}
                     className={"tootImg"}
                     src={e.preview_url}
                     alt={"media attachment"}
@@ -57,6 +52,7 @@ export const TootBody = ({ toot }) => {
                   />
                   {blurImage === true && (
                     <button
+                      key={`button-${e.id}-${index}`}
                       className="centered"
                       onClick={() => {
                         setBlur(!blurImage)
@@ -70,6 +66,7 @@ export const TootBody = ({ toot }) => {
               {e.type === "gifv" && (
                 <video
                   src={e.url}
+                  key={`v-${e.id}-${index}`}
                   alt={"media attachment"}
                   autoPlay
                   loop
