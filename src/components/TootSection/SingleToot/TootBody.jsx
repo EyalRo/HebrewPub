@@ -1,4 +1,11 @@
 import React, { useState } from "react"
+import {
+  BrowserView,
+  MobileView,
+  isBrowser,
+  isMobile,
+} from "react-device-detect"
+
 import { TextWithEmojis } from "../../TextWithEmojies"
 import Masonry from "react-responsive-masonry"
 
@@ -30,12 +37,20 @@ export const TootBody = ({ toot }) => {
         </div>
       )}
       {toot.media_attachments.length > 0 && (
-        <Masonry columnsCount={Math.min( toot.media_attachments.length,3)} gutter="10px">
+        <Masonry
+          columnsCount={Math.min(
+            toot.media_attachments.length,
+            isMobile ? 2 : 3
+          )}
+          gutter="1px"
+        >
           {toot.media_attachments.map(e => (
-            <div className="image" key={e.id}>
+            <>
               {e.type === "image" && (
-                <div className="container">
+                <>
                   <img
+                    key={e.id}
+                    className={"tootImg"}
                     src={e.preview_url}
                     alt={"media attachment"}
                     style={{ filter: `blur(${blurImage ? "1.5rem" : 0})` }}
@@ -50,7 +65,7 @@ export const TootBody = ({ toot }) => {
                       אזהרת תוכן 👁️👁️👁️
                     </button>
                   )}
-                </div>
+                </>
               )}
               {e.type === "gifv" && (
                 <video
@@ -59,9 +74,10 @@ export const TootBody = ({ toot }) => {
                   autoPlay
                   loop
                   type="video/mp4"
+                  style={{ maxWidth: "100%" }}
                 />
               )}
-            </div>
+            </>
           ))}
         </Masonry>
       )}

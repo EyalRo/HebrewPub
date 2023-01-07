@@ -121,30 +121,14 @@
   }
 }
 
-.image {
-  .container {
-    position: relative;
-    text-align: center;
-    color: white;
-
-    img {
-      max-height: 50vh;
-    }
-
-    .centered {
-      position: absolute;
-      top: 30%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: larger;
-    }
-  }
-}
-
 .names {
   overflow: hidden;
 }
 
 .threadButton {
   background-color: rgb(119, 9, 101);
+}
+
+.tootImg {
+  max-width: fit-content;
 }
