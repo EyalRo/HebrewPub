@@ -8,7 +8,7 @@ const Layout = ({ children }) => {
   return (
     <>
       <meta name="viewport" content="width=device-width, initial-scale=1" />
-
+      <meta name="description" content="פדעברי: המקום הכי קל לקרוא את החצרוצים בעברית. לא מצריך הרשמה. פי 1000 יותר כיף"/> 
       <Header />
       <SignUp />
       <div

@@ -9,7 +9,7 @@ const Header = () => {
   return (
     <header>
       <img src={Alpha} alt={'Alpha Version'} id={"alpha"}/>
-      <div id="title">🦕הפדיברס העברי הראשון🐇</div>
+      <div id="title">פדעברי</div>
       <div id={"menuButton"}>
         <button onClick={() => toggleMenu(!menuOpen)}>
           <img src={MenuIcon} alt={`Menu icon`} />
