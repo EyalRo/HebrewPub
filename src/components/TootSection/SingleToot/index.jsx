@@ -105,7 +105,6 @@ export const Toot = ({ toot, addToots, loadOldToots }) => {
             >
               הקודם בשרשור👇
             </a>
-            |
           </div>
         )}
         {context.ancestors.length > 0 && (
