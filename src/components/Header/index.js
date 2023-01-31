@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import MenuIcon from "./menu.svg"
 import {OpenMenu} from "./OpenMenu"
 import "./header.scss"
-import Alpha from "./alpha.svg"
+import Alpha from "./alphastamp.svg"
 
 const Header = () => {
   const [menuOpen, toggleMenu] = useState(false)
