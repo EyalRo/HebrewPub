@@ -17,7 +17,11 @@ export function OpenMenu() {
         <li className="notReady">סטטיסטיקות</li>
         <li className="notReady">מפת הפדיברס העברי</li>
         <li className="notReady">אודות</li>
-        <li className="notReady">צור קשר</li>
+        <li>
+          <a style={{ color: "black" }} href="https://kishkush.net/@dino">
+            צור קשר
+          </a>
+        </li>
       </ul>
     </div>
   )
