@@ -28,6 +28,8 @@
       border-radius: 15px;
       color: white;
       text-decoration: none;
+    }
+    .threadButton {
       display: block;
     }
     .toot {
@@ -129,6 +131,7 @@
   background-color: rgb(119, 9, 101);
 }
 
-.tootImg, .tootVid {
+.tootImg,
+.tootVid {
   max-width: fit-content;
 }
