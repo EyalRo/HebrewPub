@@ -4,12 +4,14 @@ import "./toot.scss"
 import { UserIdentity } from "./UserIdentity"
 import useIntersection from "./useIntersection"
 import axios from "axios"
+import { Hidden, Stack } from "@mui/material"
 
 export const Toot = ({ toot, addToots, loadOldToots }) => {
   const ref = useRef()
   const inViewport = useIntersection(ref, "500px")
   const url = new URL(toot.url)
 
+  const [showThread, setShowThread] = useState(false)
   const [tootSeen, setSeen] = useState(false)
   const [context, setContext] = useState({
     ancestors: [],
@@ -64,13 +66,14 @@ export const Toot = ({ toot, addToots, loadOldToots }) => {
             return (
               <div style={{ flex: 1 }} key={`rep-to-${descendant.id}`}>
                 <a
+                  style={{ direction: "rtl" }}
                   className={"threadButton"}
                   href={`#${descendant.id}`}
                   onClick={function () {
                     addToots(context.descendants)
                   }}
                 >
-                  הבא בשרשור☝️
+                  {`תגובה מאת ${descendant.account.display_name}`}
                 </a>
               </div>
             )
@@ -89,34 +92,37 @@ export const Toot = ({ toot, addToots, loadOldToots }) => {
         {`
         פיברוטים ${toot.favourites_count} בוסטים ${toot.reblogs_count} תגובות ${toot.replies_count}`}
       </div>
-      <div className="ancestors">
-        {context.ancestors.length > 1 && (
-          <div
-            className="toot"
-            key={context.ancestors[context.ancestors.length - 1].id}
-          >
-            <UserIdentity
-              toot={context.ancestors[context.ancestors.length - 1]}
-            />
-            <TootBody toot={context.ancestors[context.ancestors.length - 1]} />
-            <a
-              className={"threadButton"}
-              href={`#${context.ancestors[context.ancestors.length - 1].id}`}
-            >
-              הקודם בשרשור👇
-            </a>
-          </div>
-        )}
+      <div style={{ direction: "rtl" }}>
         {context.ancestors.length > 0 && (
-          <div className="toot" key={context.ancestors[0].id}>
-            <UserIdentity toot={context.ancestors[0]} />
-            <TootBody toot={context.ancestors[0]} />
-            <a className={"threadButton"} href={`#${context.ancestors[0].id}`}>
-              הראשון בשרשור🌀
-            </a>
+          <div>
+            {`קודם בשרשור... `}
+            <span
+              className="threadArrow"
+              style={{
+                display: "inline-block",
+                rotate: `${showThread ? 0 : 180}deg`,
+                transition: "rotate 0.5s ease",
+              }}
+              onClick={function () {
+                setShowThread(!showThread)
+              }}
+            >
+              🔽
+            </span>
           </div>
         )}
       </div>
+      <Stack
+      className={"ancestors"}
+      style={{height:showThread?"auto":0, overflow:"hidden"}}
+      >
+        {context.ancestors.map(ancestor => (
+          <div className="toot" key={ancestor.id}>
+            <UserIdentity toot={ancestor} />
+            <TootBody toot={ancestor} />
+          </div>
+        ))}
+      </Stack>
     </div>
   )
 }
