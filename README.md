@@ -15,6 +15,6 @@ npm install
 npm start
 ```
 
-נכתב ב-❤️, [ריאקט](https://reactjs.org/), [רידקס](https://react-redux.js.org/), וב[גרומט](https://v2.grommet.io/)
+נכתב [בריאקט](https://reactjs.org/), [רידקס](https://react-redux.js.org/), [בגרומט](https://v2.grommet.io/) וב-❤️
 
 </div>
