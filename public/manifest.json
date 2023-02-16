@@ -1,4 +1,6 @@
 {
+  "short_name": "React App",
+  "name": "Create React App Sample",
   "icons": [
     {
       "src": "favicon.ico",
@@ -16,12 +18,8 @@
       "sizes": "512x512"
     }
   ],
+  "start_url": ".",
   "display": "standalone",
-  "name": "פדעברי: הפדיברס העברי",
-  "short_name": "פדעברי",
-  "theme_color": "#770965",
-  "background_color": "#625b68",
-  "orientation": "portrait",
-  "scope": "/",
-  "start_url": "/"
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
 }
