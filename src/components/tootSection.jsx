@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addToots, updateNewest } from '../features/toots/allTootSlice';
+import { addToots, updateNewest, updateOldest } from '../features/toots/allTootSlice';
 
 import { useQueries } from 'react-query';
-import { Box, Card, CardHeader, CardBody, CardFooter, Button } from 'grommet';
-import { Favorite, ShareOption } from 'grommet-icons';
+import { Box, Card, CardHeader, CardBody, CardFooter, Button, Avatar, Text, TextArea, Paragraph } from 'grommet';
+import { Favorite, ShareOption, UserFemale } from 'grommet-icons';
 
 function TootSection() {
   // redux hooks
@@ -34,14 +34,22 @@ function TootSection() {
       // update newest toot
       queryData[0] !== undefined &&
         dispatch(updateNewest({ [`${new URL(queryData[0].url).hostname}`]: queryData[0].id }));
+
+      // update oldest toot
+      if (queryData[0] !== undefined) {
+        const tootURL = new URL(queryData.at(-1).url).hostname;
+        const oldestToot = allToots.filter((toot) => new URL(toot.url).hostname === tootURL).at(-1);
+        const needToUpdate = oldestToot?(oldestToot.date > queryData.at(-1).date):false
+        needToUpdate && dispatch(updateOldest({ [`${new URL(queryData.at(-1).url).hostname}`]: queryData.at(-1).id }));
+      }
     }
   }, [latestTootString, dispatch]);
 
   return (
     <Box align='center'>
-      <CardTemplate title={'Card 1'} />
-      <CardTemplate title={'Card 2'} />
-      <CardTemplate title={'Card 3'} />
+      {Object.values(allToots).map((toot) => (
+        <CardTemplate toot={toot} key={toot.id} />
+      ))}
     </Box>
   );
 }
@@ -58,11 +66,22 @@ const serverList = ['tooot.im', 'kishkush.net'];
 //////////////////////////////
 
 // A Single Toot
-const CardTemplate = ({ title }) => (
-  <Card height='small' width='large' background='light-1' margin='xsmall'>
-    <CardHeader pad='medium'>Header</CardHeader>
-    <CardBody pad='medium'>Body</CardBody>
-    <CardFooter pad={{ horizontal: 'small' }} background='light-2'>
+const CardTemplate = ({ toot }) => (
+  <Card width="50vw" background='background-front' margin='medium' pad='medium'>
+    <CardHeader dir='ltr'>
+      <Avatar background='background-contrast'>
+        <UserFemale color='text-strong' />
+      </Avatar>
+      <Box>
+        <Text>Name</Text>
+        <Text>Address</Text>
+      </Box>
+      <Text>time of toot</Text>
+    </CardHeader>
+    <CardBody border={'top'}>
+      <span dangerouslySetInnerHTML={{ __html: toot.content }} />
+    </CardBody>
+    <CardFooter justify='start' dir='ltr'>
       <Button icon={<Favorite color='red' />} hoverIndicator />
       <Button icon={<ShareOption color='plain' />} hoverIndicator />
     </CardFooter>

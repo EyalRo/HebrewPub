@@ -22,7 +22,7 @@ export const tootSlice = createSlice({
       state.newest = { ...state.newest, ...action.payload };
     },
     updateOldest: (state, action) => {
-      state.oldest = action.payload;
+      state.oldest = { ...state.oldest, ...action.payload };
     },
   },
 });
