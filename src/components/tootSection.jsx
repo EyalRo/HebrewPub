@@ -3,8 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { addToots, updateNewest, updateOldest } from '../features/toots/allTootSlice';
 
 import { useQueries } from 'react-query';
-import { Box, Card, CardHeader, CardBody, CardFooter, Button, Avatar, Text, TextArea, Paragraph } from 'grommet';
-import { Cycle, Favorite, ShareOption, UserFemale, Chat } from 'grommet-icons';
+import { Box, Card, CardHeader, CardBody, Button, Avatar, Text } from 'grommet';
 
 function TootSection() {
   // redux hooks
@@ -108,7 +107,6 @@ const SingleToot = ({ toot }) => {
           <span dangerouslySetInnerHTML={{ __html: toot.content }} />
         </CardBody>
       </Button>
-     
     </Card>
   );
 };
