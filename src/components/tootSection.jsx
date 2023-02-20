@@ -39,7 +39,7 @@ function TootSection() {
       if (queryData[0] !== undefined) {
         const tootURL = new URL(queryData.at(-1).url).hostname;
         const oldestToot = allToots.filter((toot) => new URL(toot.url).hostname === tootURL).at(-1);
-        const needToUpdate = oldestToot?(oldestToot.date > queryData.at(-1).date):false
+        const needToUpdate = oldestToot ? oldestToot.date > queryData.at(-1).date : false;
         needToUpdate && dispatch(updateOldest({ [`${new URL(queryData.at(-1).url).hostname}`]: queryData.at(-1).id }));
       }
     }
@@ -67,18 +67,18 @@ const serverList = ['tooot.im', 'kishkush.net'];
 
 // A Single Toot
 const CardTemplate = ({ toot }) => (
-  <Card width="50vw" background='background-front' margin='medium' pad='medium'>
-    <CardHeader dir='ltr'>
-      <Avatar background='background-contrast'>
-        <UserFemale color='text-strong' />
-      </Avatar>
-      <Box>
-        <Text>Name</Text>
-        <Text>Address</Text>
+  <Card width='50vw' background='background-front' margin='medium' pad='medium'>
+    <CardHeader dir='ltr' pad={{ bottom: 'small' }}>
+      <Avatar src={toot.account.avatar} />
+      <Box flex='grow'>
+        <Text>{toot.account.display_name}</Text>
+        <Text>{`@${toot.account.username}@${new URL(toot.account.url).hostname}`}</Text>
       </Box>
-      <Text>time of toot</Text>
+      <Box>
+      <Text>{new Date(toot.created_at).toLocaleTimeString('he-IL',{ hour: "2-digit", minute: "2-digit" })}</Text>
+      <Text dir='rtl'>{new Date(toot.created_at).toLocaleDateString('he-IL',{day:"2-digit", month:"short"})}</Text></Box>
     </CardHeader>
-    <CardBody border={'top'}>
+    <CardBody border='top'>
       <span dangerouslySetInnerHTML={{ __html: toot.content }} />
     </CardBody>
     <CardFooter justify='start' dir='ltr'>
@@ -93,7 +93,7 @@ const CardTemplate = ({ toot }) => (
 //////////////////////////////
 
 const fetchTootsByServer = async (server) => {
-  const res = await fetch(`https://${server}/api/v1/timelines/public?local=true&limit=10`);
+  const res = await fetch(`https://${server}/api/v1/timelines/public?local=true`);
   const data = await res.json();
   return data;
 };
