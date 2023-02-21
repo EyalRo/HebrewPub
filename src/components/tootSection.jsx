@@ -27,18 +27,15 @@ function TootSection() {
 
   useEffect(() => {
     for (const query in serverQueries) {
-      // add to allToots
-      const queryData = (serverQueries[query].data ??= []);
-      dispatch(addToots(queryData));
-
-      // update newest toot
-      queryData[0] !== undefined &&
-        dispatch(updateNewest({ [`${new URL(queryData[0].url).hostname}`]: queryData[0] }));
+      // add to allToots if successful
+      const queryData = (serverQueries[query]);
+      (queryData.isSuccess) && dispatch(addToots(queryData.data));
     }
 
-    // update oldest toot
+    // update oldest and newest toots
     for (let server of serverList) {
-      dispatch(updateOldest({ [server]: allToots.filter((toot) => new URL(toot.url).hostname == server).at(-1) }));
+      dispatch(updateOldest({ [server]: allToots.filter((toot) => new URL(toot.url).hostname === server).at(-1) }));
+      dispatch(updateNewest({ [server]: allToots.filter((toot) => new URL(toot.url).hostname === server).at(0) }));
     }
   }, [latestTootString, dispatch]);
 
