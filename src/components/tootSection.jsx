@@ -81,7 +81,7 @@ const SingleToot = ({ toot }) => {
     var isOldest = oldest[new URL(toot.url).hostname] && toot.id === oldest[new URL(toot.url).hostname].id;
     var seen = false; // need to implement
     isOldest && seen && fetchOldTootsByServer(new URL(toot.url).hostname, toot.id).then((r) => dispatch(addToots(r)));
-  }, [JSON.stringify(oldest)]);
+  }, [JSON.stringify(oldest), dispatch, toot]);
 
   return (
     <Card
