@@ -33,15 +33,12 @@ function TootSection() {
 
       // update newest toot
       queryData[0] !== undefined &&
-        dispatch(updateNewest({ [`${new URL(queryData[0].url).hostname}`]: queryData[0].id }));
+        dispatch(updateNewest({ [`${new URL(queryData[0].url).hostname}`]: queryData[0] }));
+    }
 
-      // update oldest toot
-      if (queryData[0] !== undefined) {
-        const tootURL = new URL(queryData.at(-1).url).hostname;
-        const oldestToot = allToots.filter((toot) => new URL(toot.url).hostname === tootURL).at(-1);
-        const needToUpdate = oldestToot ? oldestToot.date > queryData.at(-1).date : false;
-        needToUpdate && dispatch(updateOldest({ [`${new URL(queryData.at(-1).url).hostname}`]: queryData.at(-1).id }));
-      }
+    // update oldest toot
+    for (let server of serverList) {
+      dispatch(updateOldest({ [server]: allToots.filter((toot) => new URL(toot.url).hostname == server).at(-1) }));
     }
   }, [latestTootString, dispatch]);
 
