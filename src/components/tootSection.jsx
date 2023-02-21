@@ -28,8 +28,8 @@ function TootSection() {
   useEffect(() => {
     for (const query in serverQueries) {
       // add to allToots if successful
-      const queryData = (serverQueries[query]);
-      (queryData.isSuccess) && dispatch(addToots(queryData.data));
+      const queryData = serverQueries[query];
+      queryData.isSuccess && dispatch(addToots(queryData.data));
     }
 
     // update oldest and newest toots
@@ -70,6 +70,12 @@ const fetchTootsByServer = async (server) => {
 //////////////////////////////
 
 const SingleToot = ({ toot }) => {
+  const oldest = useSelector((state) => state.allToots.oldest);
+
+  useEffect(() => {
+    (oldest[new URL(toot.url).hostname] && (toot.id === oldest[new URL(toot.url).hostname].id)) && console.log('found it')
+  },[JSON.stringify(oldest)]);
+
   return (
     <Card
       margin='small'
