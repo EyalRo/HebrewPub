@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addToots, updateNewest, updateOldest } from '../features/toots/allTootSlice';
 
@@ -8,8 +8,6 @@ import { Box, Card, CardHeader, CardBody, Button, Avatar, Text } from 'grommet';
 function TootSection() {
   // redux hooks
   const allToots = useSelector((state) => state.allToots.value);
-  const newest = useSelector((state) => state.allToots.newest);
-
   const dispatch = useDispatch();
 
   // react-query hooks
@@ -65,16 +63,25 @@ const fetchTootsByServer = async (server) => {
   return data;
 };
 
+const fetchOldTootsByServer = async (server, pointer) => {
+  const res = await fetch(`https://${server}/api/v1/timelines/public?local=true&max_id=${pointer}`);
+  const data = await res.json();
+  return data;
+};
+
 //////////////////////////////
 //        Components        //
 //////////////////////////////
 
 const SingleToot = ({ toot }) => {
   const oldest = useSelector((state) => state.allToots.oldest);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    (oldest[new URL(toot.url).hostname] && (toot.id === oldest[new URL(toot.url).hostname].id)) && console.log('found it')
-  },[JSON.stringify(oldest)]);
+    var isOldest = oldest[new URL(toot.url).hostname] && toot.id === oldest[new URL(toot.url).hostname].id;
+    var seen = false; // need to implement
+    isOldest && seen && fetchOldTootsByServer(new URL(toot.url).hostname, toot.id).then((r) => dispatch(addToots(r)));
+  }, [JSON.stringify(oldest)]);
 
   return (
     <Card
