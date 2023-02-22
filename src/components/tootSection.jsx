@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addToots, updateNewest, updateOldest } from '../features/toots/allTootSlice';
+import { addToots, seeToot, updateNewest, updateOldest } from '../features/toots/allTootSlice';
 
 import { useQueries } from 'react-query';
 import { Box, Card, CardHeader, CardBody, Button, Avatar, Text } from 'grommet';
@@ -75,16 +75,23 @@ const fetchOldTootsByServer = async (server, pointer) => {
 
 const SingleToot = ({ toot }) => {
   const oldest = useSelector((state) => state.allToots.oldest);
+  const seenToots = useSelector((state) => state.allToots.seenToots);
+
   const dispatch = useDispatch();
+
+  const ref = useRef();
+  const onScreen = useOnScreen(ref, '0px');
 
   useEffect(() => {
     var isOldest = oldest[new URL(toot.url).hostname] && toot.id === oldest[new URL(toot.url).hostname].id;
-    var seen = false; // need to implement
+    var seen = seenToots.includes(toot.id);
     isOldest && seen && fetchOldTootsByServer(new URL(toot.url).hostname, toot.id).then((r) => dispatch(addToots(r)));
   }, [JSON.stringify(oldest), dispatch, toot]);
 
-  const ref = useRef();
-  const onScreen = useOnScreen(ref, '-300px');
+  useEffect(() => {
+    var seen = seenToots.includes(toot.id);
+    !seen && dispatch(seeToot(toot.id));
+  }, [onScreen]);
 
   return (
     <Card
@@ -98,7 +105,6 @@ const SingleToot = ({ toot }) => {
         side: 'bottom',
       }}
       round={false}>
-        <Text>{onScreen.toString()}</Text>
       <Button href={toot.account.url}>
         <CardHeader dir='ltr' pad={{ bottom: 'small' }}>
           <Avatar src={toot.account.avatar} />
