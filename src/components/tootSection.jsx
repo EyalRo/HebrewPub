@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addToots, updateNewest, updateOldest } from '../features/toots/allTootSlice';
 
@@ -83,8 +83,12 @@ const SingleToot = ({ toot }) => {
     isOldest && seen && fetchOldTootsByServer(new URL(toot.url).hostname, toot.id).then((r) => dispatch(addToots(r)));
   }, [JSON.stringify(oldest), dispatch, toot]);
 
+  const ref = useRef();
+  const onScreen = useOnScreen(ref, '-300px');
+
   return (
     <Card
+      ref={ref}
       margin='small'
       pad='medium'
       width='100%'
@@ -94,6 +98,7 @@ const SingleToot = ({ toot }) => {
         side: 'bottom',
       }}
       round={false}>
+        <Text>{onScreen.toString()}</Text>
       <Button href={toot.account.url}>
         <CardHeader dir='ltr' pad={{ bottom: 'small' }}>
           <Avatar src={toot.account.avatar} />
@@ -117,3 +122,32 @@ const SingleToot = ({ toot }) => {
     </Card>
   );
 };
+
+/////////////////////////////////////////////////////
+// useOnScreen Hook - determing if toot is visible //
+/////////////////////////////////////////////////////
+
+function useOnScreen(ref, rootMargin = '0px') {
+  // State and setter for storing whether element is visible
+  const [isIntersecting, setIntersecting] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // Update our state when observer callback fires
+        setIntersecting(entry.isIntersecting);
+      },
+      {
+        rootMargin,
+      }
+    );
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+    return () => {
+      observer.unobserve(ref.current);
+    };
+  }, []); // Empty array ensures that effect is only run on mount and unmount
+
+  return isIntersecting;
+}
