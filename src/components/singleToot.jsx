@@ -18,7 +18,7 @@ const SingleToot = ({ toot }) => {
   const [isOldest, setOldest] = useState(false);
   const [isLoading, setLoading] = useState(false);
 
-  const [contentWarning, setCW] = useState(toot.spoiler_text != '');
+  const [contentWarning, setCW] = useState((toot.sensitive || toot.spoiler_text !== ''));
 
   useEffect(() => {
     setOldest(oldest.includes(toot.id));
@@ -69,7 +69,7 @@ const SingleToot = ({ toot }) => {
           </CardBody>
         </Button>
       ) : (
-        <Box height='xsmall' width='full' align='center'>
+        <Box height='xsmall' width='full' align='center' margin={{top:'medium',bottom:'medium'}} >
           <Button
             secondary
             label={`אזהרת תוכן: ${toot.spoiler_text}`}
@@ -83,7 +83,11 @@ const SingleToot = ({ toot }) => {
       {toot.media_attachments.length > 0 && (
         <Box>
           {toot.media_attachments.map((attachment) => (
-            <Attachment key={`attachment_${attachment.id}`} attachment={attachment} />
+            <Attachment
+              key={`attachment_${attachment.id}`}
+              attachment={attachment}
+              contentWarning={contentWarning}
+            />
           ))}
         </Box>
       )}
