@@ -5,6 +5,7 @@ import { Box, Card, CardHeader, CardBody, Button, Avatar, Text, Spinner } from '
 import { addToots, cleanOldest, startLoading, stopLoading } from '../features/toots/allTootSlice';
 import { fetchOldTootsByServer } from './tootFunctions';
 import useOnScreen from './useOnScreen';
+import Attachment from './attachment';
 
 const SingleToot = ({ toot }) => {
   const oldest = useSelector((state) => state.allToots.oldest);
@@ -16,6 +17,8 @@ const SingleToot = ({ toot }) => {
 
   const [isOldest, setOldest] = useState(false);
   const [isLoading, setLoading] = useState(false);
+
+  const [contentWarning, setCW] = useState(toot.spoiler_text != '');
 
   useEffect(() => {
     setOldest(oldest.includes(toot.id));
@@ -58,11 +61,33 @@ const SingleToot = ({ toot }) => {
           </Box>
         </CardHeader>
       </Button>
-      <Button href={toot.url}>
-        <CardBody>
-          <span dangerouslySetInnerHTML={{ __html: toot.content }} />
-        </CardBody>
-      </Button>
+
+      {contentWarning == '' ? (
+        <Button href={toot.url}>
+          <CardBody>
+            <span dangerouslySetInnerHTML={{ __html: toot.content }} />
+          </CardBody>
+        </Button>
+      ) : (
+        <Box height='xsmall' width='full' align='center'>
+          <Button
+            secondary
+            label={`אזהרת תוכן: ${toot.spoiler_text}`}
+            fill
+            onClick={() => {
+              setCW(!contentWarning);
+            }}
+          />
+        </Box>
+      )}
+      {toot.media_attachments.length > 0 && (
+        <Box>
+          {toot.media_attachments.map((attachment) => (
+            <Attachment key={`attachment_${attachment.id}`} attachment={attachment} />
+          ))}
+        </Box>
+      )}
+
       {isLoading && <Spinner />}
     </Card>
   );
