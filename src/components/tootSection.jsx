@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addToots, updateNewest, updateOldest } from '../features/toots/allTootSlice';
-import SingleToot from '../components/singleToot'
+import SingleToot from '../components/singleToot';
 import { useQueries } from 'react-query';
 import { Box } from 'grommet';
 import { fetchTootsByServer, serverList } from './tootFunctions';
@@ -9,6 +9,8 @@ import { fetchTootsByServer, serverList } from './tootFunctions';
 function TootSection() {
   // redux hooks
   const allToots = useSelector((state) => state.allToots.value);
+  const oldestToots = useSelector((state) => state.allToots.oldest);
+
   const dispatch = useDispatch();
 
   // react-query hooks
@@ -32,12 +34,18 @@ function TootSection() {
     }
   }, [latestTootString, dispatch]);
 
-useEffect(()=>{
-  // update oldest and newest toots
-  for (let server of serverList) {
-    dispatch(updateOldest({ [server]: allToots.filter((toot) => new URL(toot.url).hostname === server).at(-1) }));
-    dispatch(updateNewest({ [server]: allToots.filter((toot) => new URL(toot.url).hostname === server).at(0) }));}
-},[allToots.length])
+  useEffect(() => {
+    // update oldest and newest toots
+    for (let server of serverList) {
+      try {
+        const oldestToot = allToots.filter((toot) => new URL(toot.url).hostname === server).at(-1).id
+        dispatch(updateOldest(oldestToot))
+      } catch (error) {
+        // not yet propogated
+      }
+      dispatch(updateNewest({ [server]: allToots.filter((toot) => new URL(toot.url).hostname === server).at(0) }));
+    }
+  }, [allToots.length]);
 
   return (
     <Box alignSelf='center' align='center' background='background-contrast' width='large' round={true} margin='medium'>

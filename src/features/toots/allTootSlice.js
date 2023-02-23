@@ -4,8 +4,8 @@ export const tootSlice = createSlice({
   name: 'allToots',
   initialState: {
     value: [],
-    newest: null,
-    oldest: null,
+    newest: [],
+    oldest: [],
     seenToots: [],
   },
   reducers: {
@@ -23,12 +23,15 @@ export const tootSlice = createSlice({
       state.newest = { ...state.newest, ...action.payload };
     },
     updateOldest: (state, action) => {
-      state.oldest = { ...state.oldest, ...action.payload };
+      state.oldest.push(action.payload);
+    },
+    cleanOldest: (state, action) => {
+      state.oldest = state.oldest.filter((e) => e != action.payload);
     },
     seeToot: (state, action) => {
       state.seenToots.push(action.payload);
     },
   },
 });
-export const { addToots, updateNewest, updateOldest, seeToot } = tootSlice.actions;
+export const { addToots, updateNewest, updateOldest, seeToot,cleanOldest } = tootSlice.actions;
 export default tootSlice.reducer;
