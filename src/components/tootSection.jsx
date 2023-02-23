@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addToots, seeToot, updateNewest, updateOldest } from '../features/toots/allTootSlice';
-
+import { addToots, updateNewest, updateOldest } from '../features/toots/allTootSlice';
+import SingleToot from '../components/singleToot'
 import { useQueries } from 'react-query';
-import { Box, Card, CardHeader, CardBody, Button, Avatar, Text } from 'grommet';
+import { Box } from 'grommet';
+import { fetchTootsByServer, serverList } from './tootFunctions';
 
 function TootSection() {
   // redux hooks
@@ -29,13 +30,14 @@ function TootSection() {
       const queryData = serverQueries[query];
       queryData.isSuccess && dispatch(addToots(queryData.data));
     }
-
-    // update oldest and newest toots
-    for (let server of serverList) {
-      dispatch(updateOldest({ [server]: allToots.filter((toot) => new URL(toot.url).hostname === server).at(-1) }));
-      dispatch(updateNewest({ [server]: allToots.filter((toot) => new URL(toot.url).hostname === server).at(0) }));
-    }
   }, [latestTootString, dispatch]);
+
+useEffect(()=>{
+  // update oldest and newest toots
+  for (let server of serverList) {
+    dispatch(updateOldest({ [server]: allToots.filter((toot) => new URL(toot.url).hostname === server).at(-1) }));
+    dispatch(updateNewest({ [server]: allToots.filter((toot) => new URL(toot.url).hostname === server).at(0) }));}
+},[allToots.length])
 
   return (
     <Box alignSelf='center' align='center' background='background-contrast' width='large' round={true} margin='medium'>
@@ -47,113 +49,3 @@ function TootSection() {
 }
 
 export default TootSection;
-
-//////////////////////////////
-// List of Fedivri Servers  //
-//////////////////////////////
-const serverList = ['tooot.im', 'kishkush.net'];
-
-//////////////////////////////
-//        Functions         //
-//////////////////////////////
-
-const fetchTootsByServer = async (server) => {
-  const res = await fetch(`https://${server}/api/v1/timelines/public?local=true`);
-  const data = await res.json();
-  return data;
-};
-
-const fetchOldTootsByServer = async (server, pointer) => {
-  const res = await fetch(`https://${server}/api/v1/timelines/public?local=true&max_id=${pointer}`);
-  const data = await res.json();
-  return data;
-};
-
-//////////////////////////////
-//        Components        //
-//////////////////////////////
-
-const SingleToot = ({ toot }) => {
-  const oldest = useSelector((state) => state.allToots.oldest);
-  const seenToots = useSelector((state) => state.allToots.seenToots);
-
-  const dispatch = useDispatch();
-
-  const ref = useRef();
-  const onScreen = useOnScreen(ref, '0px');
-
-  useEffect(() => {
-    var isOldest = oldest[new URL(toot.url).hostname] && toot.id === oldest[new URL(toot.url).hostname].id;
-    var seen = seenToots.includes(toot.id);
-    isOldest && seen && fetchOldTootsByServer(new URL(toot.url).hostname, toot.id).then((r) => dispatch(addToots(r)));
-  }, [JSON.stringify(oldest), dispatch, toot]);
-
-  useEffect(() => {
-    var seen = seenToots.includes(toot.id);
-    !seen && dispatch(seeToot(toot.id));
-  }, [onScreen]);
-
-  return (
-    <Card
-      ref={ref}
-      margin='small'
-      pad='medium'
-      width='100%'
-      elevation='none'
-      border={{
-        size: 'medium',
-        side: 'bottom',
-      }}
-      round={false}>
-      <Button href={toot.account.url}>
-        <CardHeader dir='ltr' pad={{ bottom: 'small' }}>
-          <Avatar src={toot.account.avatar} />
-          <Box flex='grow'>
-            <Text>{toot.account.display_name}</Text>
-            <Text>{`@${toot.account.username}@${new URL(toot.account.url).hostname}`}</Text>
-          </Box>
-          <Box>
-            <Text>{new Date(toot.created_at).toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })}</Text>
-            <Text dir='rtl'>
-              {new Date(toot.created_at).toLocaleDateString('he-IL', { day: '2-digit', month: 'short' })}
-            </Text>
-          </Box>
-        </CardHeader>
-      </Button>
-      <Button href={toot.url}>
-        <CardBody>
-          <span dangerouslySetInnerHTML={{ __html: toot.content }} />
-        </CardBody>
-      </Button>
-    </Card>
-  );
-};
-
-/////////////////////////////////////////////////////
-// useOnScreen Hook - determing if toot is visible //
-/////////////////////////////////////////////////////
-
-function useOnScreen(ref, rootMargin = '0px') {
-  // State and setter for storing whether element is visible
-  const [isIntersecting, setIntersecting] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        // Update our state when observer callback fires
-        setIntersecting(entry.isIntersecting);
-      },
-      {
-        rootMargin,
-      }
-    );
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-    return () => {
-      observer.unobserve(ref.current);
-    };
-  }, []); // Empty array ensures that effect is only run on mount and unmount
-
-  return isIntersecting;
-}
