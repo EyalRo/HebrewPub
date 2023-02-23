@@ -3,13 +3,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { addToots, updateNewest, updateOldest } from '../features/toots/allTootSlice';
 import SingleToot from '../components/singleToot';
 import { useQueries } from 'react-query';
-import { Box } from 'grommet';
+import { Box, Layer, Text } from 'grommet';
 import { fetchTootsByServer, serverList } from './tootFunctions';
 
 function TootSection() {
   // redux hooks
   const allToots = useSelector((state) => state.allToots.value);
   const oldestToots = useSelector((state) => state.allToots.oldest);
+  const isLoading = useSelector((state) => state.allToots.loading);
 
   const dispatch = useDispatch();
 
@@ -22,6 +23,8 @@ function TootSection() {
       };
     })
   );
+
+  const { lockScroll, unlockScroll } = useScrollLock();
 
   // This weird dependency array is a string version of the latest toot ids. triggers only when a new toot is fetched from any of the servers
   var latestTootString = JSON.stringify(serverQueries.map((query) => (query.data ? (query.data[0].id ??= 0) : 0)));
@@ -38,8 +41,8 @@ function TootSection() {
     // update oldest and newest toots
     for (let server of serverList) {
       try {
-        const oldestToot = allToots.filter((toot) => new URL(toot.url).hostname === server).at(-1).id
-        dispatch(updateOldest(oldestToot))
+        const oldestToot = allToots.filter((toot) => new URL(toot.url).hostname === server).at(-1).id;
+        dispatch(updateOldest(oldestToot));
       } catch (error) {
         // not yet propogated
       }
@@ -47,13 +50,43 @@ function TootSection() {
     }
   }, [allToots.length]);
 
+  useEffect(() => {
+    if (isLoading) {
+      lockScroll();
+    } else {
+      unlockScroll();
+    }
+  }, [isLoading]);
+
   return (
     <Box alignSelf='center' align='center' background='background-contrast' width='large' round={true} margin='medium'>
       {Object.values(allToots).map((toot) => (
         <SingleToot toot={toot} key={toot.id} />
       ))}
+      {isLoading && (
+        <Layer full={true} margin='xlarge'>
+          <Text size='6xl' textAlign='center' alignSelf='center'>
+            Loading
+          </Text>
+        </Layer>
+      )}
     </Box>
   );
 }
 
 export default TootSection;
+
+const useScrollLock = () => {
+  const lockScroll = React.useCallback(() => {
+    document.body.style.overflow = 'hidden';
+  }, []);
+
+  const unlockScroll = React.useCallback(() => {
+    document.body.style.overflow = '';
+  }, []);
+
+  return {
+    lockScroll,
+    unlockScroll,
+  };
+};

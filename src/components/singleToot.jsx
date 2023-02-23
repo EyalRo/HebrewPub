@@ -1,24 +1,31 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { Box, Card, CardHeader, CardBody, Button, Avatar, Text } from 'grommet';
-import { addToots, cleanOldest } from '../features/toots/allTootSlice';
+import { Box, Card, CardHeader, CardBody, Button, Avatar, Text, Spinner } from 'grommet';
+import { addToots, cleanOldest, startLoading, stopLoading } from '../features/toots/allTootSlice';
 import { fetchOldTootsByServer } from './tootFunctions';
 import useOnScreen from './useOnScreen';
 
 const SingleToot = ({ toot }) => {
   const oldest = useSelector((state) => state.allToots.oldest);
+  ///const isLoading = useSelector((state)=> state.allToots.loading)
   const dispatch = useDispatch();
 
   const ref = useRef();
   const onScreen = useOnScreen(ref, '0px');
 
   const [isOldest, setOldest] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     setOldest(oldest.includes(toot.id));
     if (isOldest && onScreen) {
-      fetchOldTootsByServer(new URL(toot.url).hostname, toot.id).then((r) => dispatch(addToots(r)));
+      setLoading(true);
+      dispatch(startLoading());
+      fetchOldTootsByServer(new URL(toot.url).hostname, toot.id)
+        .then((r) => dispatch(addToots(r)))
+        .then(() => dispatch(stopLoading()))
+        .then(setLoading(false));
       dispatch(cleanOldest(toot.id));
     }
   }, [JSON.stringify(oldest), onScreen]);
@@ -56,6 +63,7 @@ const SingleToot = ({ toot }) => {
           <span dangerouslySetInnerHTML={{ __html: toot.content }} />
         </CardBody>
       </Button>
+      {isLoading && <Spinner />}
     </Card>
   );
 };
