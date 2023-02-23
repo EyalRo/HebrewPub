@@ -13,7 +13,7 @@ const SingleToot = ({ toot }) => {
   const dispatch = useDispatch();
 
   const ref = useRef();
-  const onScreen = useOnScreen(ref, '0px');
+  const onScreen = useOnScreen(ref, '500px');
 
   const [isOldest, setOldest] = useState(false);
   const [isLoading, setLoading] = useState(false);
@@ -35,7 +35,7 @@ const SingleToot = ({ toot }) => {
 
   return (
     <Card
-      background={isOldest ? 'brand' : ''}
+      background={(isOldest) ? 'brand' : ''}
       ref={ref}
       margin='small'
       pad='medium'

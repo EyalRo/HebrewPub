@@ -8,7 +8,7 @@ const Attachment = ({ attachment, contentWarning }) => {
   if (attachment.type === 'image') {
     return (
       <Box>
-        <Box >
+        <Box>
           <Button
             secondary
             alignSelf='center'
