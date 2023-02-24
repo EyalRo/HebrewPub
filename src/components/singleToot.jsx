@@ -116,16 +116,32 @@ const SingleToot = ({ toot }) => {
         </Box>
       </CardBody>
 
-      <CardFooter>
-        <Box direction='row' width='small' justify='evenly'>
+      <CardFooter margin={{top:"medium"}}>
+        <Box direction='row' width='medium' justify='evenly'>
           <Stack anchor='top-right'>
             <Favorite size='large' />
-            <Box background='brand' pad={{ horizontal: 'xsmall' }} round>
-              <Text>8</Text>
-            </Box>
+            {toot.favourites_count > 0 && (
+              <Box background='brand' pad={{ horizontal: 'xsmall' }} round>
+                <Text>{toot.favourites_count}</Text>
+              </Box>
+            )}
           </Stack>
-          <Revert />
-          <Cycle />
+          <Stack anchor='top-right'>
+            <Revert size='large' />
+            {toot.replies_count > 0 && (
+              <Box background='brand' pad={{ horizontal: 'xsmall' }} round>
+                <Text>{toot.replies_count}</Text>
+              </Box>
+            )}
+          </Stack>
+          <Stack anchor='top-right'>
+            <Cycle size='large' />
+            {toot.reblogs_count > 0 && (
+              <Box background='brand' pad={{ horizontal: 'xsmall' }} round>
+                <Text>{toot.reblogs_count}</Text>
+              </Box>
+            )}
+          </Stack>
         </Box>
       </CardFooter>
     </Card>
