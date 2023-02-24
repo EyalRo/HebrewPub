@@ -9,7 +9,6 @@ import { fetchTootsByServer, serverList } from './tootFunctions';
 function TootSection() {
   // redux hooks
   const allToots = useSelector((state) => state.allToots.value);
-  const oldestToots = useSelector((state) => state.allToots.oldest);
   const isLoading = useSelector((state) => state.allToots.loading);
 
   const dispatch = useDispatch();
