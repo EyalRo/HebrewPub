@@ -7,7 +7,7 @@ const Attachment = ({ attachment, contentWarning }) => {
 
   if (attachment.type === 'image') {
     return (
-      <Box>
+      <Box height='small' width='small' overflow='hidden' margin='xsmall' >
         <Box>
           <Button
             secondary

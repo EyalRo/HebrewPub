@@ -98,7 +98,7 @@ const SingleToot = ({ toot }) => {
           </Box>
         )}
         {toot.media_attachments.length > 0 && (
-          <Box>
+          <Box wrap={true} direction='row' justify='center'>
             {toot.media_attachments.map((attachment) => (
               <Attachment key={`attachment_${attachment.id}`} attachment={attachment} contentWarning={contentWarning} />
             ))}
