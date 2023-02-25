@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "פדעברי",
+  "name": "פדעברי: הפדיברס העברי",
   "icons": [
     {
       "src": "favicon.ico",
@@ -18,8 +18,13 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
+  "start_url": "https://kishkush.net",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#181818",
+  "description": "שירות קל ונוח לקריאה של כל הפדיברס העברי במקום אחד. אין חובת הרשמה",
+  "dir": "rtl",
+  "scope": "https://kishkush.net",
+  "lang": "he",
+  "orientation": "portrait"
 }
