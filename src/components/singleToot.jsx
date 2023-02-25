@@ -120,9 +120,9 @@ const SingleToot = ({ toot }) => {
 
       <CardFooter margin={{ top: 'medium' }}>
         <Box direction='row' width='medium' justify='evenly'>
-          <Text>{`פיברוטים: ${toot.favourites_count}`}</Text>
+          <Text>{`חיבובים: ${toot.favourites_count}`}</Text>
           <Text>{`תגובות: ${toot.replies_count}`}</Text>
-          <Text>{`ריתוותים: ${toot.reblogs_count}`}</Text>
+          <Text>{`הדהודים: ${toot.reblogs_count}`}</Text>
         </Box>
       </CardFooter>
     </Card>
