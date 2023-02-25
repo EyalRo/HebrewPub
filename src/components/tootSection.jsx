@@ -65,7 +65,7 @@ function TootSection() {
       {isLoading && (
         <Layer full={true} margin='xlarge'>
           <Text size='6xl' textAlign='center' alignSelf='center'>
-            Loading
+            טוען חצרוצים נוספים...
           </Text>
         </Layer>
       )}

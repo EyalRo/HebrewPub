@@ -159,15 +159,17 @@ const getContext = async (toot) => {
   return data;
 };
 
-const TootForContext = ({ toot,  contentWarning }) => {
+const TootForContext = ({ toot }) => {
+  const [contentWarning, setCW] = useState(toot.sensitive || toot.spoiler_text !== '');
+
   return (
     <>
       <Box direction='row' margin={{ right: 'xsmall' }}>
         {/* Account & Toot Details */}
         <Button href={toot.account.url}>
-          <Box dir='ltr' pad='small' width='xsmall' margin={{top:'18px'}}>
-            <Avatar src={toot.account.avatar} alignSelf='end'/>
-            <Box  >
+          <Box dir='ltr' pad='small' width='xsmall' margin={{ top: '18px' }}>
+            <Avatar src={toot.account.avatar} alignSelf='end' />
+            <Box>
               <Text textAlign='end'>{toot.account.display_name}</Text>
             </Box>
           </Box>
@@ -180,7 +182,14 @@ const TootForContext = ({ toot,  contentWarning }) => {
               <div dangerouslySetInnerHTML={{ __html: toot.content }} />
             </Button>
           ) : (
-            <Button secondary label={`אזהרת תוכן: ${toot.spoiler_text}`} fill />
+            <Button
+              secondary
+              label={`אזהרת תוכן: ${toot.spoiler_text}`}
+              fill
+              onClick={() => {
+                setCW(!contentWarning);
+              }}
+            />
           )}
         </Box>
         <Box height='xsmall' border='left' alignSelf='center' />
