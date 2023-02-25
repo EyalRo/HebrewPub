@@ -2,7 +2,7 @@
 //////////////////////////////
 // List of Fedivri Servers  //
 //////////////////////////////
-export const serverList = ['tooot.im', 'kishkush.net'];
+export const serverList = ['tooot.im', 'kishkush.net', 'hed.im','hayu.sh','pirsamti.com','leftodon.social'];
 
 //////////////////////////////
 //        Functions         //
