@@ -75,7 +75,7 @@ const SingleToot = ({ toot }) => {
 
       <CardBody>
         {/* Descendents */}
-        <Box width='85%' direction='column-reverse'>
+        <Box direction='column-reverse'>
           {context.descendants.map((toot) => (
             <TootForContext toot={toot} contentWarning={contentWarning} key={`ancestor_${toot.id}`} />
           ))}
@@ -106,7 +106,7 @@ const SingleToot = ({ toot }) => {
         )}
 
         {/* Ancestors */}
-        <Box width='85%'>
+        <Box>
           {context.ancestors
             .slice(-3)
             .reverse()
@@ -161,27 +161,30 @@ const getContext = async (toot) => {
 
 const TootForContext = ({ toot, context, contentWarning }) => {
   return (
-    <Box direction='row' margin={{ right: 'xsmall' }}>
-      {/* Account & Toot Details */}
-      <Button href={toot.account.url}>
-        <Box dir='ltr' pad='small' width='75px'>
-          <Avatar src={toot.account.avatar} />
-          <Box flex='grow'>
-            <Text>{toot.account.display_name}</Text>
+    <>
+      <Box direction='row' margin={{ right: 'xsmall' }}>
+        {/* Account & Toot Details */}
+        <Button href={toot.account.url}>
+          <Box dir='ltr' pad='small' width='xsmall'>
+            <Avatar src={toot.account.avatar} alignSelf='end'/>
+            <Box  >
+              <Text textAlign='end'>{toot.account.display_name}</Text>
+            </Box>
           </Box>
-        </Box>
-      </Button>
+        </Button>
 
-      {/* Toot Content*/}
-      <Box width='100%' background='brand'>
-        {contentWarning == '' ? (
-          <Button href={toot.url}>
-            <span dangerouslySetInnerHTML={{ __html: toot.content }} />
-          </Button>
-        ) : (
-          <Button secondary label={`אזהרת תוכן: ${toot.spoiler_text}`} fill />
-        )}
+        {/* Toot Content*/}
+        <Box width='100%'>
+          {contentWarning == '' ? (
+            <Button href={toot.url}>
+              <span dangerouslySetInnerHTML={{ __html: toot.content }} />
+            </Button>
+          ) : (
+            <Button secondary label={`אזהרת תוכן: ${toot.spoiler_text}`} fill />
+          )}
+        </Box>
+        <Box height='xsmall' border='left' alignSelf='center' />
       </Box>
-    </Box>
+    </>
   );
 };
