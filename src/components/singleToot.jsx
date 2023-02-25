@@ -116,7 +116,7 @@ const SingleToot = ({ toot }) => {
         </Box>
       </CardBody>
 
-      <CardFooter margin={{top:"medium"}}>
+      <CardFooter margin={{ top: 'medium' }}>
         <Box direction='row' width='medium' justify='evenly'>
           <Stack anchor='top-right'>
             <Favorite size='large' />
@@ -161,28 +161,19 @@ const getContext = async (toot) => {
 
 const TootForContext = ({ toot, context, contentWarning }) => {
   return (
-    <Card margin='small' pad='medium' width='100%' elevation='none' round={false}>
-      <Box align='center'>
-        <BlockQuote />
-      </Box>
-
+    <Box direction='row' margin={{ right: 'xsmall' }}>
       {/* Account & Toot Details */}
       <Button href={toot.account.url}>
-        <CardHeader dir='ltr' pad={{ bottom: 'small' }}>
+        <Box dir='ltr' pad='small' width='75px'>
           <Avatar src={toot.account.avatar} />
           <Box flex='grow'>
             <Text>{toot.account.display_name}</Text>
-            <Text>{`@${toot.account.username}@${new URL(toot.account.url).hostname}`}</Text>
           </Box>
-          <Box>
-            <Text>{new Date(toot.created_at).toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })}</Text>
-            <Text dir='rtl'>
-              {new Date(toot.created_at).toLocaleDateString('he-IL', { day: '2-digit', month: 'short' })}
-            </Text>
-          </Box>
-        </CardHeader>
+        </Box>
       </Button>
-      <CardBody>
+
+      {/* Toot Content*/}
+      <Box width='100%' background='brand'>
         {contentWarning == '' ? (
           <Button href={toot.url}>
             <span dangerouslySetInnerHTML={{ __html: toot.content }} />
@@ -190,9 +181,7 @@ const TootForContext = ({ toot, context, contentWarning }) => {
         ) : (
           <Button secondary label={`אזהרת תוכן: ${toot.spoiler_text}`} fill />
         )}
-      </CardBody>
-
-      <CardFooter>{/* Likes/Replies/Retoots will live here */}</CardFooter>
-    </Card>
+      </Box>
+    </Box>
   );
 };
