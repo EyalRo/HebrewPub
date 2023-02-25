@@ -61,12 +61,15 @@ const SingleToot = ({ toot }) => {
       {/* Account & Toot Details */}
       <Button href={toot.account.url}>
         <CardHeader dir='ltr' pad={{ bottom: 'small' }}>
-          <Avatar src={toot.account.avatar} />
-          <Box flex='grow'>
-            <Text>{toot.account.display_name}</Text>
-            <Text>{`@${toot.account.username}@${new URL(toot.account.url).hostname}`}</Text>
+          <Box width='48px' flex={false}>
+            <Avatar src={toot.account.avatar}  />
           </Box>
+
           <Box>
+            <Text truncate>{toot.account.display_name}</Text>
+            <Text truncate>{`@${toot.account.username}@${new URL(toot.account.url).hostname}`}</Text>
+          </Box>
+          <Box width='75px' flex={false}>
             <Text>{new Date(toot.created_at).toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })}</Text>
             <Text dir='rtl'>
               {new Date(toot.created_at).toLocaleDateString('he-IL', { day: '2-digit', month: 'short' })}
