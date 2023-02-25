@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { QueryClientProvider, QueryClient } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools'
+import { ReactQueryDevtools } from 'react-query/devtools';
 import { Grommet, grommet, Header, Button, Text, Page, PageContent, PageHeader } from 'grommet';
 import { deepMerge } from 'grommet/utils';
 import { Moon, Sun } from 'grommet-icons';
@@ -9,7 +9,7 @@ import TootSection from './components/tootSection';
 
 function App() {
   const [dark, setDark] = useState(true);
-  const queryClient = new QueryClient()
+  const queryClient = new QueryClient();
 
   return (
     <Grommet full theme={theme} dir='rtl' themeMode={dark ? 'dark' : 'light'}>
@@ -23,18 +23,19 @@ function App() {
               onClick={() => setDark(!dark)}
             />
           </AppBar>
-          <PageContent>
-            <PageHeader title={'פדעברי: הפדיברס העברי'} />
-            <Text>
-              בשביל לכתוב סטאטוס חדש, לעשות לייק או לפרסם סטאטוס קיים יש צורך להרשם. קל להרשם בכל אחד מהשרתים של הפדיברס
-              העברי. בכדי להרשם, יש לבחור את אחד השרתים:
-            </Text>
-            <QueryClientProvider client={queryClient}>
-              <TootSection />
-              <ReactQueryDevtools initialIsOpen={false} />
-            </QueryClientProvider>
-          </PageContent>
         </header>
+
+        <PageContent>
+          <PageHeader title={'פדעברי: הפדיברס העברי'} />
+          <Text>
+            בשביל לכתוב סטאטוס חדש, לעשות לייק או לפרסם סטאטוס קיים יש צורך להרשם. קל להרשם בכל אחד מהשרתים של הפדיברס
+            העברי. בכדי להרשם, יש לבחור את אחד השרתים:
+          </Text>
+          <QueryClientProvider client={queryClient}>
+            <TootSection />
+            <ReactQueryDevtools initialIsOpen={false} />
+          </QueryClientProvider>
+        </PageContent>
       </Page>
     </Grommet>
   );

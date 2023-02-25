@@ -88,7 +88,7 @@ const SingleToot = ({ toot }) => {
 
         {contentWarning == '' ? (
           <Button href={toot.url}>
-            <Text dangerouslySetInnerHTML={{ __html: toot.content }} />
+            <Text dangerouslySetInnerHTML={{ __html: toot.content }} wordBreak='break-all'/>
           </Button>
         ) : (
           <Box height='xsmall' width='full' align='center' margin={{ top: 'medium', bottom: 'medium' }}>
@@ -163,7 +163,7 @@ const TootForContext = ({ toot }) => {
         <Box width='100%'>
           {contentWarning == '' ? (
             <Button href={toot.url}>
-              <div dangerouslySetInnerHTML={{ __html: toot.content }} />
+              <Text dangerouslySetInnerHTML={{ __html: toot.content }} />
             </Button>
           ) : (
             <Button
