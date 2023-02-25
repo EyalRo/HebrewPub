@@ -8,6 +8,8 @@ import useOnScreen from './useOnScreen';
 import Attachment from './attachment';
 import { BlockQuote, Cycle, Favorite, Like, Revert } from 'grommet-icons';
 
+import './designFix.scss';
+
 const SingleToot = ({ toot }) => {
   const oldest = useSelector((state) => state.allToots.oldest);
   ///const isLoading = useSelector((state)=> state.allToots.loading)
@@ -83,7 +85,7 @@ const SingleToot = ({ toot }) => {
 
         {contentWarning == '' ? (
           <Button href={toot.url}>
-            <span dangerouslySetInnerHTML={{ __html: toot.content }} />
+            <Text dangerouslySetInnerHTML={{ __html: toot.content }} />
           </Button>
         ) : (
           <Box height='xsmall' width='full' align='center' margin={{ top: 'medium', bottom: 'medium' }}>
@@ -118,30 +120,9 @@ const SingleToot = ({ toot }) => {
 
       <CardFooter margin={{ top: 'medium' }}>
         <Box direction='row' width='medium' justify='evenly'>
-          <Stack anchor='top-right'>
-            <Favorite size='large' />
-            {toot.favourites_count > 0 && (
-              <Box background='brand' pad={{ horizontal: 'xsmall' }} round>
-                <Text>{toot.favourites_count}</Text>
-              </Box>
-            )}
-          </Stack>
-          <Stack anchor='top-right'>
-            <Revert size='large' />
-            {toot.replies_count > 0 && (
-              <Box background='brand' pad={{ horizontal: 'xsmall' }} round>
-                <Text>{toot.replies_count}</Text>
-              </Box>
-            )}
-          </Stack>
-          <Stack anchor='top-right'>
-            <Cycle size='large' />
-            {toot.reblogs_count > 0 && (
-              <Box background='brand' pad={{ horizontal: 'xsmall' }} round>
-                <Text>{toot.reblogs_count}</Text>
-              </Box>
-            )}
-          </Stack>
+          <Text>{`פיברוטים: ${toot.favourites_count}`}</Text>
+          <Text>{`תגובות: ${toot.replies_count}`}</Text>
+          <Text>{`ריתוותים: ${toot.reblogs_count}`}</Text>
         </Box>
       </CardFooter>
     </Card>
