@@ -148,7 +148,7 @@ const TootForContext = ({ toot }) => {
 
   return (
     <>
-      <Box direction='row' margin={{ right: 'xsmall' }}>
+      <Box direction='row' margin='xsmall'>
         {/* Account & Toot Details */}
         <Button href={toot.account.url}>
           <Box dir='ltr' pad='small' width='xsmall' margin={{ top: '18px' }}>
