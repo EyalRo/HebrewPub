@@ -65,7 +65,7 @@ const SingleToot = ({ toot }) => {
             <Avatar src={toot.account.avatar}  />
           </Box>
 
-          <Box>
+          <Box flex>
             <Text truncate>{toot.account.display_name}</Text>
             <Text truncate>{`@${toot.account.username}@${new URL(toot.account.url).hostname}`}</Text>
           </Box>
