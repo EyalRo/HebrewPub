@@ -13,10 +13,6 @@ root.render(
     <Provider store={store}>
       <App />
     </Provider>
-    <script
-      defer
-      src='https://static.cloudflareinsights.com/beacon.min.js'
-      data-cf-beacon='{"token": "3206661197a0408fa68d17e736d0e934"}'></script>
   </React.StrictMode>
 );
 

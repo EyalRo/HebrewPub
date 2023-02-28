@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addToots, updateNewest, updateOldest } from '../features/toots/allTootSlice';
+import { addEmoji, addToots, updateNewest, updateOldest } from '../features/toots/allTootSlice';
 import SingleToot from '../components/singleToot';
 import { useQueries } from 'react-query';
 import { Box, Layer, Text } from 'grommet';
-import { fetchTootsByServer, serverList } from './tootFunctions';
+import { fetchTootsByServer, serverList, fetchEmojiByServer } from './tootFunctions';
 
 function TootSection() {
   // redux hooks
@@ -23,6 +23,15 @@ function TootSection() {
     })
   );
 
+  const emojiQueries = useQueries(
+    serverList.map((server) => {
+      return {
+        queryKey: ['emoji', server],
+        queryFn: () => fetchEmojiByServer(server),
+      };
+    })
+  );
+
   const { lockScroll, unlockScroll } = useScrollLock();
 
   // This weird dependency array is a string version of the latest toot ids. triggers only when a new toot is fetched from any of the servers
@@ -33,7 +42,7 @@ function TootSection() {
       // add to allToots if successful
       const queryData = serverQueries[query];
       queryData.isSuccess && dispatch(addToots(queryData.data));
-    }
+    }    
   }, [latestTootString, dispatch]);
 
   useEffect(() => {

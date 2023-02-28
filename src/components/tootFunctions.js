@@ -19,3 +19,9 @@ export const fetchOldTootsByServer = async (server, pointer) => {
   const data = await res.json();
   return data;
 };
+
+export const fetchEmojiByServer = async (server) => {
+  const res = await fetch(`https://${server}/api/v1/custom_emojis`);
+  const data = await res.json();
+  return data;
+};
