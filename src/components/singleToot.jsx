@@ -7,6 +7,7 @@ import { fetchOldTootsByServer } from './tootFunctions';
 import useOnScreen from './useOnScreen';
 import Attachment from './attachment';
 import { BlockQuote, Cycle, Favorite, Like, Revert } from 'grommet-icons';
+import parse from 'html-react-parser';
 
 import './designFix.scss';
 
@@ -88,7 +89,8 @@ const SingleToot = ({ toot }) => {
 
         {contentWarning == '' ? (
           <Button href={toot.url}>
-            <Text dangerouslySetInnerHTML={{ __html: toot.content }} wordBreak='break-all'/>
+            <Text  />
+            {parse(toot.content)}
           </Button>
         ) : (
           <Box height='xsmall' width='full' align='center' margin={{ top: 'medium', bottom: 'medium' }}>
