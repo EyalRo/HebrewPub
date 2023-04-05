@@ -6,7 +6,6 @@ import { addToots, cleanOldest, startLoading, stopLoading } from '../features/to
 import { fetchOldTootsByServer } from './tootFunctions';
 import useOnScreen from './useOnScreen';
 import Attachment from './attachment';
-import { BlockQuote, Cycle, Favorite, Like, Revert } from 'grommet-icons';
 import parse from 'html-react-parser';
 
 import './designFix.scss';
@@ -20,7 +19,6 @@ const SingleToot = ({ toot }) => {
   const onScreen = useOnScreen(ref, '500px');
 
   const [isOldest, setOldest] = useState(false);
-  const [isLoading, setLoading] = useState(false);
 
   const [contentWarning, setCW] = useState(toot.sensitive || toot.spoiler_text !== '');
   const [context, setContext] = useState({ ancestors: [], descendants: [] });
@@ -29,12 +27,10 @@ const SingleToot = ({ toot }) => {
   useEffect(() => {
     setOldest(oldest.includes(toot.id));
     if (isOldest && onScreen) {
-      setLoading(true);
       dispatch(startLoading());
       fetchOldTootsByServer(new URL(toot.url).hostname, toot.id)
         .then((r) => dispatch(addToots(r)))
         .then(() => dispatch(stopLoading()))
-        .then(setLoading(false));
       dispatch(cleanOldest(toot.id));
     }
   }, [JSON.stringify(oldest), onScreen]);
