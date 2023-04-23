@@ -18,8 +18,8 @@ const Attachment = ({ attachment, contentWarning }) => {
             {contentWarning ? (
               <Blurhash
                 hash={attachment.blurhash}
-                width={attachment.meta.small.width}
-                height={attachment.meta.small.height}
+                width={('small' in attachment.meta) ? attachment.meta.small.width : attachment.meta.original.width}
+                height={('small' in attachment.meta) ? attachment.meta.small.height : attachment.meta.original.height}
                 resolutionX={32}
                 resolutionY={32}
                 punch={1}
