@@ -39,7 +39,7 @@ export const tootSlice = createSlice({
       state.loading = false;
     },
     addEmoji: (state, action) => {
-      state.emojis = [...state.emojis, ...action.payload];
+      state.emojis = action.payload;
     },
   },
 });

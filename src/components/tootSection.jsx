@@ -34,6 +34,27 @@ function TootSection() {
 
   const { lockScroll, unlockScroll } = useScrollLock();
 
+  useEffect(() =>{
+    var emojiMaps = emojiQueries.map((query) => {
+      if (query.data) {
+        const { server, data } = query.data;
+        const emojiDict = data.reduce((dict, emoji) => {
+          dict[emoji.shortcode] = emoji.url;
+          return dict;
+        }, {});
+        return { server, emojiDict };
+      }
+      return 0;
+    });
+  
+    const emojiDict = emojiMaps.reduce((dict, map) => {
+      dict[map.server] = map.emojiDict;
+      return dict;
+    }, {});
+  
+    dispatch(addEmoji(emojiDict));  
+  }, [emojiQueries]);
+
   // This weird dependency array is a string version of the latest toot ids. triggers only when a new toot is fetched from any of the servers
   var latestTootString = JSON.stringify(serverQueries.map((query) => (query.data ? (query.data[0].id ??= 0) : 0)));
 
