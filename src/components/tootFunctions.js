@@ -25,3 +25,14 @@ export const fetchEmojiByServer = async (server) => {
   const data = await res.json();
   return { server, data };
 };
+
+export const replaceTokens = (text, urlMap) => {
+  var result = text.replaceAll(/:([a-zA-Z0-9_]*):/g, (substr, token) => {
+    if (token in urlMap) {
+      var url = urlMap[token];
+      return `<img style='vertical-align:middle;' height='22' title='${substr}' src='${url}'>`;
+    }
+    return substr;
+  });
+  return result;
+};

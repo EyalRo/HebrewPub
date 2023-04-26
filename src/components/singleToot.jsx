@@ -3,12 +3,24 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { Box, Card, CardHeader, CardBody, Button, Avatar, Text, CardFooter, Stack } from 'grommet';
 import { addToots, cleanOldest, startLoading, stopLoading } from '../features/toots/allTootSlice';
-import { fetchOldTootsByServer } from './tootFunctions';
+import { fetchOldTootsByServer, replaceTokens } from './tootFunctions';
 import useOnScreen from './useOnScreen';
 import Attachment from './attachment';
 import parse from 'html-react-parser';
 
 import './designFix.scss';
+
+const EmbedEmojis = ({ url, content }) => {
+  const emojis = useSelector((state) => state.allToots.emojis);
+  const server = new URL(url).hostname;
+
+  var newContent = content;
+  if (server in emojis) {
+    newContent = replaceTokens(newContent, emojis[server]);
+  }
+
+  return newContent;
+};
 
 const SingleToot = ({ toot }) => {
   const oldest = useSelector((state) => state.allToots.oldest);
@@ -23,6 +35,9 @@ const SingleToot = ({ toot }) => {
   const [contentWarning, setCW] = useState(toot.sensitive || toot.spoiler_text !== '');
   const [context, setContext] = useState({ ancestors: [], descendants: [] });
   const [contextMissing, setContextMissing] = useState(true);
+
+  var display_name = EmbedEmojis({url: toot.account.url, content: toot.account.display_name});
+  var content = EmbedEmojis({url: toot.url, content: toot.content});
 
   useEffect(() => {
     setOldest(oldest.includes(toot.id));
@@ -63,7 +78,7 @@ const SingleToot = ({ toot }) => {
           </Box>
 
           <Box flex>
-            <Text truncate>{toot.account.display_name}</Text>
+            <Text truncate dangerouslySetInnerHTML={{ __html: display_name }} />
             <Text truncate>{`@${toot.account.username}@${new URL(toot.account.url).hostname}`}</Text>
           </Box>
           <Box width='75px' flex={false}>
@@ -86,7 +101,7 @@ const SingleToot = ({ toot }) => {
         {contentWarning == '' ? (
           <Button href={toot.url}>
             <Text  />
-            {parse(toot.content)}
+            {parse(content)}
           </Button>
         ) : (
           <Box height='xsmall' width='full' align='center' margin={{ top: 'medium', bottom: 'medium' }}>
@@ -144,6 +159,12 @@ const getContext = async (toot) => {
 const TootForContext = ({ toot }) => {
   const [contentWarning, setCW] = useState(toot.sensitive || toot.spoiler_text !== '');
 
+  const emojis = useSelector((state) => state.allToots.emojis);
+  const server = new URL(toot.account.url).hostname;
+
+  var display_name = EmbedEmojis({url: toot.account.url, content: toot.account.display_name});
+  var content = EmbedEmojis({url: toot.url, content: toot.content});
+
   return (
     <>
       <Box direction='row' margin='xsmall'>
@@ -152,7 +173,7 @@ const TootForContext = ({ toot }) => {
           <Box dir='ltr' pad='small' width='xsmall' margin={{ top: '18px' }}>
             <Avatar src={toot.account.avatar} alignSelf='end' />
             <Box>
-              <Text textAlign='end'>{toot.account.display_name}</Text>
+              <Text textAlign='end' dangerouslySetInnerHTML={{ __html: display_name }} />
             </Box>
           </Box>
         </Button>
@@ -161,7 +182,7 @@ const TootForContext = ({ toot }) => {
         <Box width='100%'>
           {contentWarning == '' ? (
             <Button href={toot.url}>
-              <Text dangerouslySetInnerHTML={{ __html: toot.content }} />
+              <Text dangerouslySetInnerHTML={{ __html: content }} />
             </Button>
           ) : (
             <Button
