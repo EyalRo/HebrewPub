@@ -41,7 +41,7 @@ const Attachment = ({ attachment, contentWarning }) => {
         )}
       </Box>
     );
-  } else if (attachment.type === 'video') {
+  } else if (attachment.type === 'video' || attachment.type === 'gifv') {
     return (
       <Box height='small' width='small' overflow='hidden' margin='xsmall' flex='shrink' round='5px'>
         <Box>
