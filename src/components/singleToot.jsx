@@ -160,6 +160,14 @@ const TootForContext = ({ toot }) => {
   const [contentWarning, setCW] = useState(toot.sensitive || toot.spoiler_text !== '');
 
   const emojis = useSelector((state) => state.allToots.emojis);
+
+  // Fill dummy information for missing account
+  if (Object.keys(toot.account).length === 0) {
+    toot.account.url = window.location.href + "#"
+    toot.account.display_name = "לא זמין"
+    toot.account.avatar = "/unavailable512.png"
+  };
+
   const server = new URL(toot.account.url).hostname;
 
   var display_name = EmbedEmojis({url: toot.account.url, content: toot.account.display_name});
