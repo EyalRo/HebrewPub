@@ -156,8 +156,6 @@ const getContext = async (toot) => {
 const TootForContext = ({ toot }) => {
   const [contentWarning, setCW] = useState(toot.sensitive || toot.spoiler_text !== '');
 
-  const emojis = useSelector((state) => state.allToots.emojis);
-
   // Fill dummy information for missing account
   if (Object.keys(toot.account).length === 0) {
     toot.account.url = window.location.href + "#";
