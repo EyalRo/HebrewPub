@@ -10,15 +10,12 @@ import parse from 'html-react-parser';
 
 import './designFix.scss';
 
-const EmbedEmojis = ({ url, content }) => {
-  const emojis = useSelector((state) => state.allToots.emojis);
-  const server = new URL(url).hostname;
-
-  var newContent = content;
-  if (server in emojis) {
-    newContent = replaceTokens(newContent, emojis[server]);
-  }
-
+const EmbedEmojis = ({ content, emojis }) => {
+  const emojiDict = emojis.reduce((dict, emoji) => {
+    dict[emoji.shortcode] = emoji.url;  
+    return dict;
+  }, {});
+  var newContent = replaceTokens(content, emojiDict);
   return newContent;
 };
 
@@ -36,8 +33,8 @@ const SingleToot = ({ toot }) => {
   const [context, setContext] = useState({ ancestors: [], descendants: [] });
   const [contextMissing, setContextMissing] = useState(true);
 
-  var display_name = EmbedEmojis({url: toot.account.url, content: toot.account.display_name});
-  var content = EmbedEmojis({url: toot.url, content: toot.content});
+  var display_name = EmbedEmojis({content: toot.account.display_name, emojis: toot.account.emojis});
+  var content = EmbedEmojis({content: toot.content, emojis: toot.emojis});
 
   useEffect(() => {
     setOldest(oldest.includes(toot.id));
@@ -163,15 +160,16 @@ const TootForContext = ({ toot }) => {
 
   // Fill dummy information for missing account
   if (Object.keys(toot.account).length === 0) {
-    toot.account.url = window.location.href + "#"
-    toot.account.display_name = "לא זמין"
-    toot.account.avatar = "/unavailable512.png"
+    toot.account.url = window.location.href + "#";
+    toot.account.display_name = "לא זמין";
+    toot.account.avatar = "/unavailable512.png";
+    toot.account.emojis = [];
   };
 
   const server = new URL(toot.account.url).hostname;
 
-  var display_name = EmbedEmojis({url: toot.account.url, content: toot.account.display_name});
-  var content = EmbedEmojis({url: toot.url, content: toot.content});
+  var display_name = EmbedEmojis({content: toot.account.display_name, emojis: toot.account.emojis});
+  var content = EmbedEmojis({content: toot.content, emojis: toot.emojis});
 
   return (
     <>
