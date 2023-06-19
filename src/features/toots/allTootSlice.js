@@ -7,7 +7,6 @@ export const tootSlice = createSlice({
     newest: [],
     oldest: [],
     loading: false,
-    emojis: [],
   },
   reducers: {
     addToots: (state, action) => {
@@ -38,11 +37,8 @@ export const tootSlice = createSlice({
     stopLoading: (state) => {
       state.loading = false;
     },
-    addEmoji: (state, action) => {
-      state.emojis = action.payload;
-    },
   },
 });
-export const { addToots, updateNewest, updateOldest, seeToot, cleanOldest, startLoading, stopLoading, addEmoji } =
+export const { addToots, updateNewest, updateOldest, seeToot, cleanOldest, startLoading, stopLoading } =
   tootSlice.actions;
 export default tootSlice.reducer;

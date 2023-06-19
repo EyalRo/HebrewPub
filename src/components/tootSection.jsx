@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addEmoji, addToots, updateNewest, updateOldest } from '../features/toots/allTootSlice';
+import { addToots, updateNewest, updateOldest } from '../features/toots/allTootSlice';
 import SingleToot from '../components/singleToot';
 import { useQueries } from 'react-query';
 import { Box, Layer, Text } from 'grommet';
-import { fetchTootsByServer, serverList, fetchEmojiByServer } from './tootFunctions';
+import { fetchTootsByServer, serverList } from './tootFunctions';
 
 function TootSection() {
   // redux hooks
@@ -23,37 +23,7 @@ function TootSection() {
     })
   );
 
-  const emojiQueries = useQueries(
-    serverList.map((server) => {
-      return {
-        queryKey: ['emoji', server],
-        queryFn: () => fetchEmojiByServer(server),
-      };
-    })
-  );
-
   const { lockScroll, unlockScroll } = useScrollLock();
-
-  useEffect(() =>{
-    var emojiMaps = emojiQueries.map((query) => {
-      if (query.data) {
-        const { server, data } = query.data;
-        const emojiDict = data.reduce((dict, emoji) => {
-          dict[emoji.shortcode] = emoji.url;
-          return dict;
-        }, {});
-        return { server, emojiDict };
-      }
-      return 0;
-    });
-  
-    const emojiDict = emojiMaps.reduce((dict, map) => {
-      dict[map.server] = map.emojiDict;
-      return dict;
-    }, {});
-  
-    dispatch(addEmoji(emojiDict));  
-  }, [emojiQueries]);
 
   // This weird dependency array is a string version of the latest toot ids. triggers only when a new toot is fetched from any of the servers
   var latestTootString = JSON.stringify(serverQueries.map((query) => (query.data ? (query.data[0].id ??= 0) : 0)));
