@@ -43,8 +43,8 @@ function App() {
                 responseType="code"
                 clientId="qK9NvU3B7JQrt7vFa2OzKhOiLNge9kKvIcgA_gsRUVM"
                 redirectUri="http://localhost:3000/oauth-callback"
-                onSuccess={console.log(response)}
-                onFailure={console.error(response)}
+                onSuccess={response => console.log(response)}
+                onFailure={response => console.error(response)}
               />
             
             </Box>
