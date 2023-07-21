@@ -19,9 +19,6 @@ import { Moon, Sun } from "grommet-icons";
 import TootSection from "./components/tootSection";
 import { serverList } from "./components/tootFunctions";
 
-const onSuccess = response => console.log(`success: ${response}`);
-const onFailure = response => console.error(response);
-
 function App() {
   const [dark, setDark] = useState(true);
   const queryClient = new QueryClient();
@@ -46,8 +43,8 @@ function App() {
                 responseType="code"
                 clientId="qK9NvU3B7JQrt7vFa2OzKhOiLNge9kKvIcgA_gsRUVM"
                 redirectUri="http://localhost:3000/oauth-callback"
-                onSuccess={onSuccess}
-                onFailure={onFailure}
+                onSuccess={console.log(response)}
+                onFailure={console.error(response)}
               />
             
             </Box>
