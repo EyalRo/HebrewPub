@@ -14,7 +14,7 @@ import {
   Box,
 } from "grommet";
 import { deepMerge } from "grommet/utils";
-import { Moon, Sun } from "grommet-icons";
+import { Moon, Sun, UserExpert } from "grommet-icons";
 
 import TootSection from "./components/tootSection";
 import { serverList } from "./components/tootFunctions";
@@ -22,6 +22,7 @@ import { serverList } from "./components/tootFunctions";
 function App() {
   const [dark, setDark] = useState(true);
   const queryClient = new QueryClient();
+  const [loginCode, setLoginCode] = useState(null);
 
   return (
     <Grommet full theme={theme} dir="rtl" themeMode={dark ? "dark" : "light"}>
@@ -37,16 +38,28 @@ function App() {
                 icon={dark ? <Moon /> : <Sun />}
                 onClick={() => setDark(!dark)}
               />
-              <Text alignSelf="center">כניסה לחשבון בקשקוש.נט (נסיוני)</Text>
-              <OAuth2Login
-                authorizationUrl="https://kishkush.net/oauth/authorize"
-                responseType="code"
-                clientId="qK9NvU3B7JQrt7vFa2OzKhOiLNge9kKvIcgA_gsRUVM"
-                redirectUri="http://localhost:3000/oauth-callback"
-                onSuccess={response => console.log(response)}
-                onFailure={response => console.error(response)}
-              />
-            
+              {loginCode ? (
+                <Button
+                  icon={<UserExpert />}
+                  onClick={() => setLoginCode(null)}
+                />
+              ) : (
+                <Text alignSelf="center">כניסה לחשבון בקשקוש.נט (נסיוני)</Text>
+              )}
+
+              {!loginCode && (
+                <OAuth2Login
+                  authorizationUrl="https://kishkush.net/oauth/authorize"
+                  responseType="code"
+                  clientId="qK9NvU3B7JQrt7vFa2OzKhOiLNge9kKvIcgA_gsRUVM"
+                  redirectUri="http://localhost:3000/oauth-callback"
+                  onSuccess={(response) => setLoginCode(response)}
+                  onFailure={(response) => {
+                    console.error(response);
+                    setLoginCode(null);
+                  }}
+                />
+              )}
             </Box>
           </AppBar>
         </header>
