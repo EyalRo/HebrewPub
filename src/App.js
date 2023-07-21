@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import { Grommet, grommet, Header, Button, Text, Page, PageContent, PageHeader } from 'grommet';
+import { Grommet, grommet, Header, Button, Text, Page, PageContent, PageHeader, Box } from 'grommet';
 import { deepMerge } from 'grommet/utils';
 import { Moon, Sun } from 'grommet-icons';
 
@@ -16,12 +16,16 @@ function App() {
       <Page>
         <header className='App-header'>
           <AppBar>
-            <Text size='large'>פדעברי: הפדיברס העברי</Text>
+            <Text size='large'>פדעברי: הפדיברס העברי</Text><Box
+              direction="row"
+              >
             <Button
               a11yTitle={dark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
               icon={dark ? <Moon /> : <Sun />}
               onClick={() => setDark(!dark)}
             />
+            <Text alignSelf='center'>כניסה לחשבון בקשקוש.נט (נסיוני)</Text>
+            </Box>
           </AppBar>
         </header>
 
