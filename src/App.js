@@ -71,13 +71,20 @@ function App() {
             להרשם. קל להרשם בכל אחד מהשרתים של הפדיברס העברי. בכדי להרשם, יש
             לבחור את אחד השרתים:
           </Text>
-          <Box direction="row" alignSelf="center" gap="small">
+          <Box direction="row" alignSelf="center" gap="small" margin="small">
             {serverList
+              .filter((server) => server != `tooot.im`)
               .sort(() => Math.random() - 0.5)
               .map((server) => (
                 <Button label={server} href={`//${server}`} />
               ))}
           </Box>
+          <Text alignSelf="center" >
+          הפדרציה עובדת טוב יותר עם שרתים יחסית קטנים וקהילתיים שמפתחים אופי משלהם ולא כשכולם באותו מקום. אם תחפצו בכך ניתן להרשם גם לשרת <Button
+            label={`tooot.im`} href={`//tooot.im`}
+            /> אבל מכיוון שרשומים בו מעלה ממחצית
+            המשתמשים בשפה העברית אנו ממליצים להרשם לשרת אחר.
+          </Text>
           <QueryClientProvider client={queryClient}>
             <TootSection />
             <ReactQueryDevtools initialIsOpen={false} />
