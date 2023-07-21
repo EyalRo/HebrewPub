@@ -71,7 +71,7 @@ function App() {
             להרשם. קל להרשם בכל אחד מהשרתים של הפדיברס העברי. בכדי להרשם, יש
             לבחור את אחד השרתים:
           </Text>
-          <Box direction="row" alignSelf="center" gap="small" margin="small">
+          <Box direction="row" alignSelf="center" gap="small" margin="small" wrap="true">
             {serverList
               .filter((server) => server != `tooot.im`)
               .sort(() => Math.random() - 0.5)
