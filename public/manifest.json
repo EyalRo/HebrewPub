@@ -18,13 +18,13 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": "https://kishkush.net",
+  "start_url": "https://heb.kishkush.net",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#181818",
   "description": "שירות קל ונוח לקריאה של כל הפדיברס העברי במקום אחד. אין חובת הרשמה",
   "dir": "rtl",
-  "scope": "https://kishkush.net",
+  "scope": "https://heb.kishkush.net",
   "lang": "he",
   "orientation": "portrait"
 }
