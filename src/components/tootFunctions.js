@@ -1,21 +1,50 @@
-
 //////////////////////////////
 // List of Fedivri Servers  //
 //////////////////////////////
-export const serverList = ['tooot.im', 'kishkush.net', 'hed.im','hayu.sh','leftodon.social', 'reshet.social', 'toot.org.il'];
+export const serverList = [
+  "tooot.im",
+  "kishkush.net",
+  "hed.im",
+  "hayu.sh",
+  "leftodon.social",
+  "reshet.social",
+  "toot.org.il",
+];
 
 //////////////////////////////
 //        Functions         //
 //////////////////////////////
 
 export const fetchTootsByServer = async (server) => {
-  const res = await fetch(`https://${server}/api/v1/timelines/public?local=true`);
+  const res = await fetch(
+    `https://${server}/api/v1/timelines/public?local=true`
+  );
   const data = await res.json();
   return data;
 };
 
 export const fetchOldTootsByServer = async (server, pointer) => {
-  const res = await fetch(`https://${server}/api/v1/timelines/public?local=true&max_id=${pointer}`);
+  const res = await fetch(
+    `https://${server}/api/v1/timelines/public?local=true&max_id=${pointer}`
+  );
+  const data = await res.json();
+  return data;
+};
+
+export const fetchHomeByServer = async (server, code) => {
+  const res = await fetch(`https://${server}/api/v1/timelines/home`, {
+    headers: {
+      Authorization: `Bearer ${code}`,
+    },
+  });
+  const data = await res.json();
+  return data;
+};
+
+export const fetchOldHomeByServer = async (server, code, pointer) => {
+  const res = await fetch(
+    `https://${server}/api/v1/timelines/home&max_id=${pointer}`
+  );
   const data = await res.json();
   return data;
 };
