@@ -60,35 +60,32 @@ const Attachment = ({ attachment, contentWarning }) => {
   } else if (attachment.type === "video" || attachment.type === "gifv") {
     return (
       <Box
-        height="small"
-        width="small"
         overflow="hidden"
         margin="xsmall"
         flex="shrink"
         round="5px"
+        height={{ min: "small", max: "medium" }}
       >
-        <Box>
-          <Button
-            secondary
-            alignSelf="center"
-            onClick={() => {
-              setShowModal(true);
-            }}
-          >
-            {contentWarning ? (
-              <Blurhash
-                hash={attachment.blurhash}
-                width={attachment.meta.small.width}
-                height={attachment.meta.small.height}
-                resolutionX={32}
-                resolutionY={32}
-                punch={1}
-              />
-            ) : (
-              <Image fit="cover" src={attachment.preview_url} />
-            )}
-          </Button>
-        </Box>
+        <Button
+          secondary
+          alignSelf="center"
+          onClick={() => {
+            setShowModal(true);
+          }}
+        >
+          {contentWarning ? (
+            <Blurhash
+              hash={attachment.blurhash}
+              width={attachment.meta.small.width}
+              height={attachment.meta.small.height}
+              resolutionX={32}
+              resolutionY={32}
+              punch={1}
+            />
+          ) : (
+            <Image fit="cover" src={attachment.preview_url} />
+          )}
+        </Button>
 
         {showModal && (
           <Layer
