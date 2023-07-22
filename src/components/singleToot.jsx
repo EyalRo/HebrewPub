@@ -1,18 +1,33 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useEffect, useRef, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
-import { Box, Card, CardHeader, CardBody, Button, Avatar, Text, CardFooter, Stack } from 'grommet';
-import { addToots, cleanOldest, startLoading, stopLoading } from '../features/toots/allTootSlice';
-import { fetchOldTootsByServer, replaceTokens } from './tootFunctions';
-import useOnScreen from './useOnScreen';
-import Attachment from './attachment';
-import parse from 'html-react-parser';
+import {
+  Box,
+  Card,
+  CardHeader,
+  CardBody,
+  Button,
+  Avatar,
+  Text,
+  CardFooter,
+  Stack,
+} from "grommet";
+import {
+  addToots,
+  cleanOldest,
+  startLoading,
+  stopLoading,
+} from "../features/toots/allTootSlice";
+import { fetchOldTootsByServer, replaceTokens } from "./tootFunctions";
+import useOnScreen from "./useOnScreen";
+import Attachment from "./attachment";
+import parse from "html-react-parser";
 
-import './designFix.scss';
+import "./designFix.scss";
 
 const EmbedEmojis = ({ content, emojis }) => {
   const emojiDict = emojis.reduce((dict, emoji) => {
-    dict[emoji.shortcode] = emoji.url;  
+    dict[emoji.shortcode] = emoji.url;
     return dict;
   }, {});
   var newContent = replaceTokens(content, emojiDict);
@@ -25,16 +40,21 @@ const SingleToot = ({ toot }) => {
   const dispatch = useDispatch();
 
   const ref = useRef();
-  const onScreen = useOnScreen(ref, '500px');
+  const onScreen = useOnScreen(ref, "500px");
 
   const [isOldest, setOldest] = useState(false);
 
-  const [contentWarning, setCW] = useState(toot.sensitive || toot.spoiler_text !== '');
+  const [contentWarning, setCW] = useState(
+    toot.sensitive || toot.spoiler_text !== ""
+  );
   const [context, setContext] = useState({ ancestors: [], descendants: [] });
   const [contextMissing, setContextMissing] = useState(true);
 
-  var display_name = EmbedEmojis({content: toot.account.display_name, emojis: toot.account.emojis});
-  var content = EmbedEmojis({content: toot.content, emojis: toot.emojis});
+  var display_name = EmbedEmojis({
+    content: toot.account.display_name,
+    emojis: toot.account.emojis,
+  });
+  var content = EmbedEmojis({ content: toot.content, emojis: toot.emojis });
 
   useEffect(() => {
     setOldest(oldest.includes(toot.id));
@@ -42,7 +62,7 @@ const SingleToot = ({ toot }) => {
       dispatch(startLoading());
       fetchOldTootsByServer(new URL(toot.url).hostname, toot.id)
         .then((r) => dispatch(addToots(r)))
-        .then(() => dispatch(stopLoading()))
+        .then(() => dispatch(stopLoading()));
       dispatch(cleanOldest(toot.id));
     }
   }, [JSON.stringify(oldest), onScreen]);
@@ -56,32 +76,43 @@ const SingleToot = ({ toot }) => {
 
   return (
     <Card
-      background={isOldest ? 'brand' : ''}
+      background={isOldest ? "brand" : ""}
       ref={ref}
-      margin='small'
-      pad='medium'
-      width='100%'
-      elevation='none'
+      margin="small"
+      pad="medium"
+      width="100%"
+      elevation="none"
       border={{
-        size: 'medium',
-        side: 'bottom',
+        size: "medium",
+        side: "bottom",
       }}
-      round={false}>
+      round={false}
+    >
       {/* Account & Toot Details */}
       <Button href={toot.account.url}>
-        <CardHeader dir='ltr' pad={{ bottom: 'small' }}>
-          <Box width='48px' flex={false}>
-            <Avatar src={toot.account.avatar}  />
+        <CardHeader dir="ltr" pad={{ bottom: "small" }}>
+          <Box width="48px" flex={false}>
+            <Avatar src={toot.account.avatar} />
           </Box>
 
           <Box flex>
             <Text truncate dangerouslySetInnerHTML={{ __html: display_name }} />
-            <Text truncate>{`@${toot.account.username}@${new URL(toot.account.url).hostname}`}</Text>
+            <Text truncate>{`@${toot.account.username}@${
+              new URL(toot.account.url).hostname
+            }`}</Text>
           </Box>
-          <Box width='75px' flex={false}>
-            <Text>{new Date(toot.created_at).toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })}</Text>
-            <Text dir='rtl'>
-              {new Date(toot.created_at).toLocaleDateString('he-IL', { day: '2-digit', month: 'short' })}
+          <Box width="75px" flex={false}>
+            <Text>
+              {new Date(toot.created_at).toLocaleTimeString("he-IL", {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </Text>
+            <Text dir="rtl">
+              {new Date(toot.created_at).toLocaleDateString("he-IL", {
+                day: "2-digit",
+                month: "short",
+              })}
             </Text>
           </Box>
         </CardHeader>
@@ -89,19 +120,28 @@ const SingleToot = ({ toot }) => {
 
       <CardBody>
         {/* Descendents */}
-        <Box direction='column-reverse'>
+        <Box direction="column-reverse">
           {context.descendants.map((toot) => (
-            <TootForContext toot={toot} contentWarning={contentWarning} key={`ancestor_${toot.id}`} />
+            <TootForContext
+              toot={toot}
+              contentWarning={contentWarning}
+              key={`ancestor_${toot.id}`}
+            />
           ))}
         </Box>
 
-        {contentWarning == '' ? (
+        {contentWarning == "" ? (
           <Button href={toot.url}>
-            <Text  />
+            <Text />
             {parse(content)}
           </Button>
         ) : (
-          <Box height='xsmall' width='full' align='center' margin={{ top: 'medium', bottom: 'medium' }}>
+          <Box
+            height="xsmall"
+            width="full"
+            align="center"
+            margin={{ top: "medium", bottom: "medium" }}
+          >
             <Button
               secondary
               label={`אזהרת תוכן: ${toot.spoiler_text}`}
@@ -113,9 +153,13 @@ const SingleToot = ({ toot }) => {
           </Box>
         )}
         {toot.media_attachments.length > 0 && (
-          <Box direction='row' justify='center'>
+          <Box direction="row" justify="center">
             {toot.media_attachments.map((attachment) => (
-              <Attachment key={`attachment_${attachment.id}`} attachment={attachment} contentWarning={contentWarning} />
+              <Attachment
+                key={`attachment_${attachment.id}`}
+                attachment={attachment}
+                contentWarning={contentWarning}
+              />
             ))}
           </Box>
         )}
@@ -126,13 +170,17 @@ const SingleToot = ({ toot }) => {
             .slice(-3)
             .reverse()
             .map((toot) => (
-              <TootForContext toot={toot} contentWarning={contentWarning} key={`ancestor_${toot.id}`} />
+              <TootForContext
+                toot={toot}
+                contentWarning={contentWarning}
+                key={`ancestor_${toot.id}`}
+              />
             ))}
         </Box>
       </CardBody>
 
-      <CardFooter margin={{ top: 'medium' }}>
-        <Box direction='row' width='medium' justify='evenly'>
+      <CardFooter margin={{ top: "medium" }}>
+        <Box direction="row" width="medium" justify="evenly">
           <Text>{`חיבובים: ${toot.favourites_count}`}</Text>
           <Text>{`תגובות: ${toot.replies_count}`}</Text>
           <Text>{`הדהודים: ${toot.reblogs_count}`}</Text>
@@ -154,7 +202,9 @@ const getContext = async (toot) => {
 };
 
 const TootForContext = ({ toot }) => {
-  const [contentWarning, setCW] = useState(toot.sensitive || toot.spoiler_text !== '');
+  const [contentWarning, setCW] = useState(
+    toot.sensitive || toot.spoiler_text !== ""
+  );
 
   // Fill dummy information for missing account
   if (Object.keys(toot.account).length === 0) {
@@ -162,29 +212,35 @@ const TootForContext = ({ toot }) => {
     toot.account.display_name = "לא זמין";
     toot.account.avatar = "/unavailable512.png";
     toot.account.emojis = [];
-  };
+  }
 
   const server = new URL(toot.account.url).hostname;
 
-  var display_name = EmbedEmojis({content: toot.account.display_name, emojis: toot.account.emojis});
-  var content = EmbedEmojis({content: toot.content, emojis: toot.emojis});
+  var display_name = EmbedEmojis({
+    content: toot.account.display_name,
+    emojis: toot.account.emojis,
+  });
+  var content = EmbedEmojis({ content: toot.content, emojis: toot.emojis });
 
   return (
     <>
-      <Box direction='row' margin='xsmall'>
+      <Box direction="row" margin="xsmall">
         {/* Account & Toot Details */}
         <Button href={toot.account.url}>
-          <Box dir='ltr' pad='small' width='xsmall' margin={{ top: '18px' }}>
-            <Avatar src={toot.account.avatar} alignSelf='end' />
+          <Box dir="ltr" pad="small" width="xsmall" margin={{ top: "18px" }}>
+            <Avatar src={toot.account.avatar} alignSelf="end" />
             <Box>
-              <Text textAlign='end' dangerouslySetInnerHTML={{ __html: display_name }} />
+              <Text
+                textAlign="end"
+                dangerouslySetInnerHTML={{ __html: display_name }}
+              />
             </Box>
           </Box>
         </Button>
 
         {/* Toot Content*/}
-        <Box width='100%'>
-          {contentWarning == '' ? (
+        <Box width="100%">
+          {contentWarning == "" ? (
             <Button href={toot.url}>
               <Text dangerouslySetInnerHTML={{ __html: content }} />
             </Button>
@@ -199,7 +255,7 @@ const TootForContext = ({ toot }) => {
             />
           )}
         </Box>
-        <Box height='xsmall' border='left' alignSelf='center' />
+        <Box height="xsmall" border="left" alignSelf="center" />
       </Box>
     </>
   );
