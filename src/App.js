@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import OAuth2Login from "react-simple-oauth2-login/dist/OAuth2Login";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+
+import { useSelector, useDispatch } from "react-redux";
+import { setToken, clearToken } from "./features/toots/allTootSlice";
+
 import {
   Grommet,
   grommet,
@@ -22,7 +26,9 @@ import { serverList } from "./components/tootFunctions";
 function App() {
   const [dark, setDark] = useState(true);
   const queryClient = new QueryClient();
-  const [loginCode, setLoginCode] = useState(null);
+
+  const dispatch = useDispatch();
+  const loginCode = useSelector((state) => state.allToots.loginToken);
 
   return (
     <Grommet full theme={theme} dir="rtl" themeMode={dark ? "dark" : "light"}>
@@ -39,10 +45,7 @@ function App() {
                 onClick={() => setDark(!dark)}
               />
               {loginCode ? (
-                <Button
-                  icon={<UserExpert />}
-                  onClick={() => setLoginCode(null)}
-                />
+                <Button icon={<UserExpert />} onClick={() => clearToken()} />
               ) : (
                 <Text alignSelf="center">כניסה לחשבון בקשקוש.נט (נסיוני)</Text>
               )}
@@ -51,12 +54,14 @@ function App() {
                 <OAuth2Login
                   authorizationUrl="https://kishkush.net/oauth/authorize"
                   responseType="code"
-                  clientId="qK9NvU3B7JQrt7vFa2OzKhOiLNge9kKvIcgA_gsRUVM"
-                  redirectUri="http://localhost:3000/oauth-callback"
-                  onSuccess={(response) => setLoginCode(response)}
+                  clientId="I8VkB5UfZWFLz_ZZPfUY0yIN9HD01nyTswxK3qFOY-Q"
+                  redirectUri={`${window.location.protocol}//${window.location.host}/oauth-callback`}
+                  onSuccess={(response) => {
+                    dispatch(setToken(response.code));
+                  }}
                   onFailure={(response) => {
                     console.error(response);
-                    setLoginCode(null);
+                    dispatch(clearToken());
                   }}
                 />
               )}
@@ -71,7 +76,13 @@ function App() {
             להרשם. קל להרשם בכל אחד מהשרתים של הפדיברס העברי. בכדי להרשם, יש
             לבחור את אחד השרתים:
           </Text>
-          <Box direction="row" alignSelf="center" gap="small" margin="small" wrap="true">
+          <Box
+            direction="row"
+            alignSelf="center"
+            gap="small"
+            margin="small"
+            wrap="true"
+          >
             {serverList
               .filter((server) => server != `tooot.im`)
               .sort(() => Math.random() - 0.5)
