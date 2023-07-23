@@ -6,14 +6,19 @@ import {
   updateOldest,
 } from "../features/toots/allTootSlice";
 import SingleToot from "../components/singleToot";
-import { useQueries } from "react-query";
+import { useQueries, useQuery } from "react-query";
 import { Box, Layer, Text } from "grommet";
-import { fetchTootsByServer, serverList } from "./tootFunctions";
+import {
+  fetchHomeByServer,
+  fetchTootsByServer,
+  serverList,
+} from "./tootFunctions";
 
 function TootSection() {
   // redux hooks
   const allToots = useSelector((state) => state.allToots.value);
   const isLoading = useSelector((state) => state.allToots.loading);
+  const loginToken = useSelector((state) => state.allToots.loginToken);
 
   const dispatch = useDispatch();
 
@@ -27,6 +32,12 @@ function TootSection() {
     })
   );
 
+  const homeQuery = useQuery({
+    queryKey: ["home", "hardCodedKishkush"],
+    queryFn: () => fetchHomeByServer(`kishkush.net`),
+    enabled: loginToken != null,
+  });
+
   const { lockScroll, unlockScroll } = useScrollLock();
 
   // This weird dependency array is a string version of the latest toot ids. triggers only when a new toot is fetched from any of the servers
@@ -35,6 +46,7 @@ function TootSection() {
   );
 
   useEffect(() => {
+    homeQuery.isSuccess && dispatch(addToots, homeQuery.data);
     for (const query in serverQueries) {
       // add to allToots if successful
       const queryData = serverQueries[query];
