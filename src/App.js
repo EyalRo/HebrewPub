@@ -54,8 +54,8 @@ function App() {
                 <OAuth2Login
                   authorizationUrl="https://kishkush.net/oauth/authorize"
                   responseType="code"
-                  clientId="qK9NvU3B7JQrt7vFa2OzKhOiLNge9kKvIcgA_gsRUVM"
-                  redirectUri="http://localhost:3000/oauth-callback"
+                  clientId="I8VkB5UfZWFLz_ZZPfUY0yIN9HD01nyTswxK3qFOY-Q"
+                  redirectUri={`${window.location.protocol}//${window.location.host}/oauth-callback`}
                   onSuccess={(response) => {
                     dispatch(setToken(response.code));
                   }}
