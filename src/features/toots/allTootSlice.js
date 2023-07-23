@@ -1,12 +1,13 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 export const tootSlice = createSlice({
-  name: 'allToots',
+  name: "allToots",
   initialState: {
     value: [],
     newest: [],
     oldest: [],
     loading: false,
+    loginToken: null,
   },
   reducers: {
     addToots: (state, action) => {
@@ -37,8 +38,23 @@ export const tootSlice = createSlice({
     stopLoading: (state) => {
       state.loading = false;
     },
+    setToken: (state, action) => {
+      state.loginToken = action.payload;
+    },
+    clearToken: (state) => {
+      state.loginToken = null;
+    },
   },
 });
-export const { addToots, updateNewest, updateOldest, seeToot, cleanOldest, startLoading, stopLoading } =
-  tootSlice.actions;
+export const {
+  addToots,
+  updateNewest,
+  updateOldest,
+  seeToot,
+  cleanOldest,
+  startLoading,
+  stopLoading,
+  setToken,
+  clearToken,
+} = tootSlice.actions;
 export default tootSlice.reducer;
