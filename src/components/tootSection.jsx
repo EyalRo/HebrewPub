@@ -96,8 +96,17 @@ function TootSection() {
         <SingleToot toot={toot} key={toot.id} />
       ))}
       {isLoading && (
-        <Layer full={true} margin="xlarge">
-          <Text size="6xl" textAlign="center" alignSelf="center">
+        <Layer
+          margin="medium"
+          background={{ dark: "light-2", light: "dark-2" }}
+          round="large"
+        >
+          <Text
+            size="6xl"
+            textAlign="center"
+            alignSelf="center"
+            margin="medium"
+          >
             טוען חצרוצים נוספים...
           </Text>
         </Layer>
