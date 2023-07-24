@@ -81,13 +81,17 @@ function App() {
             alignSelf="center"
             gap="small"
             margin="small"
-            wrap="true"
+            wrap={true}
           >
             {serverList
               .filter((server) => server != `tooot.im`)
               .sort(() => Math.random() - 0.5)
               .map((server) => (
-                <Button label={server} href={`//${server}`} />
+                <Button
+                  key={`id_${server}`}
+                  label={server}
+                  href={`//${server}`}
+                />
               ))}
           </Box>
           <Text alignSelf="center">
