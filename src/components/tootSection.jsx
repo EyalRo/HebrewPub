@@ -100,6 +100,7 @@ function TootSection() {
           margin="medium"
           background={{ dark: "light-2", light: "dark-2" }}
           round="large"
+          animation="fadeIn"
         >
           <Text
             size="6xl"

@@ -49,7 +49,7 @@ const Attachment = ({ attachment, contentWarning }) => {
             onClickOutside={() => setShowModal(false)}
           >
             <Button onClick={() => setShowModal(false)}>
-              <Box height={{ max: "100vh" }}>
+              <Box height={{ max: "90vh" }} width={{ max: "90vw" }}>
                 <Image fit="contain" src={attachment.url} />
               </Box>
             </Button>
