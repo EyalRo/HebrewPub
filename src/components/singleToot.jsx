@@ -11,6 +11,8 @@ import {
   Text,
   CardFooter,
   Stack,
+  Accordion,
+  AccordionPanel,
 } from "grommet";
 import {
   addToots,
@@ -120,15 +122,21 @@ const SingleToot = ({ toot }) => {
 
       <CardBody>
         {/* Descendents */}
-        <Box direction="column-reverse">
-          {context.descendants.map((toot) => (
-            <TootForContext
-              toot={toot}
-              contentWarning={contentWarning}
-              key={`ancestor_${toot.id}`}
-            />
-          ))}
-        </Box>
+        {context.descendants.length > 0 && (
+          <Accordion>
+            <AccordionPanel label="חדשים בשרשור">
+              <Box direction="column-reverse">
+                {context.descendants.map((toot) => (
+                  <TootForContext
+                    toot={toot}
+                    contentWarning={contentWarning}
+                    key={`ancestor_${toot.id}`}
+                  />
+                ))}
+              </Box>
+            </AccordionPanel>
+          </Accordion>
+        )}
 
         {contentWarning == "" ? (
           <Button href={toot.url}>
@@ -165,18 +173,24 @@ const SingleToot = ({ toot }) => {
         )}
 
         {/* Ancestors */}
-        <Box>
-          {context.ancestors
-            .slice(-3)
-            .reverse()
-            .map((toot) => (
-              <TootForContext
-                toot={toot}
-                contentWarning={contentWarning}
-                key={`ancestor_${toot.id}`}
-              />
-            ))}
-        </Box>
+        {context.ancestors.length > 0 && (
+          <Accordion>
+            <AccordionPanel label="קודמים בשרשור">
+              <Box>
+                {context.ancestors
+                  .slice(-3)
+                  .reverse()
+                  .map((toot) => (
+                    <TootForContext
+                      toot={toot}
+                      contentWarning={contentWarning}
+                      key={`ancestor_${toot.id}`}
+                    />
+                  ))}
+              </Box>
+            </AccordionPanel>
+          </Accordion>
+        )}
       </CardBody>
 
       <CardFooter margin={{ top: "medium" }}>
