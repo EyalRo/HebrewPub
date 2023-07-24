@@ -22,6 +22,7 @@ import { Moon, Sun, UserExpert } from "grommet-icons";
 
 import TootSection from "./components/tootSection";
 import { serverList } from "./components/tootFunctions";
+import LoginButton from "./components/loginButton";
 
 function App() {
   const [dark, setDark] = useState(true);
@@ -29,6 +30,11 @@ function App() {
 
   const dispatch = useDispatch();
   const loginCode = useSelector((state) => state.allToots.loginToken);
+
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const code = urlParams.get("code");
+  dispatch(setToken(code))
 
   return (
     <Grommet full theme={theme} dir="rtl" themeMode={dark ? "dark" : "light"}>
@@ -47,10 +53,10 @@ function App() {
               {loginCode ? (
                 <Button icon={<UserExpert />} onClick={() => clearToken()} />
               ) : (
-                <Text alignSelf="center">כניסה לחשבון בקשקוש.נט (נסיוני)</Text>
+                <LoginButton />
               )}
 
-              {!loginCode && (
+              {false && (
                 <OAuth2Login
                   authorizationUrl="https://kishkush.net/oauth/authorize"
                   responseType="code"
