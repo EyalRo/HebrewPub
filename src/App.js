@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import OAuth2Login from "react-simple-oauth2-login/dist/OAuth2Login";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 
@@ -34,7 +33,7 @@ function App() {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const code = urlParams.get("code");
-  dispatch(setToken(code))
+  dispatch(setToken(code));
 
   return (
     <Grommet full theme={theme} dir="rtl" themeMode={dark ? "dark" : "light"}>
@@ -55,57 +54,46 @@ function App() {
               ) : (
                 <LoginButton />
               )}
-
-              {false && (
-                <OAuth2Login
-                  authorizationUrl="https://kishkush.net/oauth/authorize"
-                  responseType="code"
-                  clientId="I8VkB5UfZWFLz_ZZPfUY0yIN9HD01nyTswxK3qFOY-Q"
-                  redirectUri={`${window.location.protocol}//${window.location.host}/oauth-callback`}
-                  onSuccess={(response) => {
-                    dispatch(setToken(response.code));
-                  }}
-                  onFailure={(response) => {
-                    console.error(response);
-                    dispatch(clearToken());
-                  }}
-                />
-              )}
             </Box>
           </AppBar>
         </header>
 
         <PageContent>
           <PageHeader title={"פדעברי: הפדיברס העברי"} />
-          <Text>
-            בשביל לכתוב סטאטוס חדש, לעשות לייק או לפרסם סטאטוס קיים יש צורך
-            להרשם. קל להרשם בכל אחד מהשרתים של הפדיברס העברי. בכדי להרשם, יש
-            לבחור את אחד השרתים:
-          </Text>
-          <Box
-            direction="row"
-            alignSelf="center"
-            gap="small"
-            margin="small"
-            wrap={true}
-          >
-            {serverList
-              .filter((server) => server != `tooot.im`)
-              .sort(() => Math.random() - 0.5)
-              .map((server) => (
-                <Button
-                  key={`id_${server}`}
-                  label={server}
-                  href={`//${server}`}
-                />
-              ))}
-          </Box>
-          <Text alignSelf="center">
-            הפדרציה עובדת טוב יותר עם שרתים יחסית קטנים וקהילתיים שמפתחים אופי
-            משלהם ולא כשכולם באותו מקום. אם תחפצו בכך ניתן להרשם גם לשרת{" "}
-            <Button label={`tooot.im`} href={`//tooot.im`} /> אבל מכיוון שרשומים
-            בו מעלה ממחצית המשתמשים בשפה העברית אנו ממליצים להרשם לשרת אחר.
-          </Text>
+          {!loginCode && (
+            <>
+              <Text>
+                בשביל לכתוב סטאטוס חדש, לעשות לייק או לפרסם סטאטוס קיים יש צורך
+                להרשם. קל להרשם בכל אחד מהשרתים של הפדיברס העברי. בכדי להרשם, יש
+                לבחור את אחד השרתים:
+              </Text>
+              <Box
+                direction="row"
+                alignSelf="center"
+                gap="small"
+                margin="small"
+                wrap={true}
+              >
+                {serverList
+                  .filter((server) => server != `tooot.im`)
+                  .sort(() => Math.random() - 0.5)
+                  .map((server) => (
+                    <Button
+                      key={`id_${server}`}
+                      label={server}
+                      href={`//${server}`}
+                    />
+                  ))}
+              </Box>
+              <Text alignSelf="center">
+                הפדרציה עובדת טוב יותר עם שרתים יחסית קטנים וקהילתיים שמפתחים
+                אופי משלהם ולא כשכולם באותו מקום. אם תחפצו בכך ניתן להרשם גם
+                לשרת <Button label={`tooot.im`} href={`//tooot.im`} /> אבל
+                מכיוון שרשומים בו מעלה ממחצית המשתמשים בשפה העברית אנו ממליצים
+                להרשם לשרת אחר.
+              </Text>
+            </>
+          )}
           <QueryClientProvider client={queryClient}>
             <TootSection />
             <ReactQueryDevtools initialIsOpen={false} />
