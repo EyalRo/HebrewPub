@@ -17,7 +17,6 @@
     "react-query": "^3.39.3",
     "react-redux": "^8.1.1",
     "react-scripts": "^5.0.1",
-    "react-simple-oauth2-login": "^0.5.4",
     "sass": "^1.64.0",
     "styled-components": "^5.3.11",
     "web-vitals": "^2.1.4"
