@@ -138,7 +138,7 @@ const SingleToot = ({ toot }) => {
           </Accordion>
         )}
 
-        {contentWarning == "" ? (
+        {contentWarning === "" ? (
           <Button href={toot.url}>
             <Text />
             {parse(content)}
@@ -254,7 +254,7 @@ const TootForContext = ({ toot }) => {
 
         {/* Toot Content*/}
         <Box width="100%">
-          {contentWarning == "" ? (
+          {contentWarning === "" ? (
             <Button href={toot.url}>
               <Text dangerouslySetInnerHTML={{ __html: content }} />
             </Button>

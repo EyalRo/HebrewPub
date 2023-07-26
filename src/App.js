@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 
@@ -34,6 +34,15 @@ function App() {
   const urlParams = new URLSearchParams(queryString);
   const code = urlParams.get("code");
   dispatch(setToken(code));
+
+  useEffect(() => {
+    const code = localStorage.getItem("Fedicode");
+    code && dispatch(setToken(code));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("Fedicode", loginCode);
+  }, [loginCode]);
 
   return (
     <Grommet full theme={theme} dir="rtl" themeMode={dark ? "dark" : "light"}>
