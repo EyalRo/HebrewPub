@@ -14,7 +14,6 @@ const LoginButton = () => {
       icon={<Login />}
       success={false}
       href={hrefTarget}
-      target="_blank"
     />
   );
 };
