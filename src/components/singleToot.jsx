@@ -138,7 +138,7 @@ const SingleToot = ({ toot }) => {
           </Accordion>
         )}
 
-        {contentWarning === "" ? (
+        {contentWarning == "" ? (
           <Button href={toot.url}>
             <Text />
             {parse(content)}
