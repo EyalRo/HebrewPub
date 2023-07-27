@@ -40,9 +40,11 @@ export const tootSlice = createSlice({
     },
     setToken: (state, action) => {
       state.loginToken = action.payload;
+      localStorage.setItem("Fedicode", action.payload);
     },
     clearToken: (state) => {
       state.loginToken = null;
+      localStorage.removeItem("Fedicode");
     },
   },
 });
