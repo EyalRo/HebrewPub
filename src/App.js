@@ -30,19 +30,19 @@ function App() {
   const dispatch = useDispatch();
   const loginCode = useSelector((state) => state.allToots.loginToken);
 
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-  const code = urlParams.get("code");
-  dispatch(setToken(code));
-
   useEffect(() => {
-    const code = localStorage.getItem("Fedicode");
-    code && dispatch(setToken(code));
+    // Get token from URL
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const urlCode = urlParams.get("code");
+
+    // Get token from local storage
+    const storedCode = localStorage.getItem("Fedicode");
+
+    // set the best available token
+    const code = storedCode ? storedCode : urlCode ? urlCode : null;
+    dispatch(setToken(code));
   }, []);
-
-  useEffect(() => {
-    localStorage.setItem("Fedicode", loginCode);
-  }, [loginCode]);
 
   return (
     <Grommet full theme={theme} dir="rtl" themeMode={dark ? "dark" : "light"}>
