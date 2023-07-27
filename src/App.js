@@ -58,11 +58,7 @@ function App() {
                 icon={dark ? <Moon /> : <Sun />}
                 onClick={() => setDark(!dark)}
               />
-              {loginCode ? (
-                <Button icon={<UserExpert />} onClick={() => clearToken()} />
-              ) : (
-                <LoginButton />
-              )}
+              <LoginButton />
             </Box>
           </AppBar>
         </header>
