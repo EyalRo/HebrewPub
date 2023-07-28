@@ -28,7 +28,7 @@ const loginFunc = async () => {
   } else console.log("undefined?");
 };
 
-const genID = (domain) => {
+const genID = async (domain) => {
   const formData = new FormData();
 
   formData.append("client_name", "פדעברי: הפדיברס העברי");
