@@ -35,7 +35,7 @@ function App() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const urlCode = urlParams.get("code");
-    urlParams.delete("code")
+    urlParams.delete("code") // TBD: Update the actual URL bar
 
     // Get token from local storage
     const storedCode = localStorage.getItem("Fedicode");
