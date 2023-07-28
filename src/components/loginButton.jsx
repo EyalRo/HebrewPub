@@ -23,7 +23,7 @@ const loginFunc = async () => {
   let domain = new URL(url);
   domain = domain.hostname.replace("heb.", "");
   const appID = await genID(domain);
-  login(appID);
+  login(appID, domain);
 };
 
 async function genID(domain) {
@@ -51,8 +51,8 @@ async function genID(domain) {
     });
 }
 
-const login = (appID) => {
-  const serverURL = appID.serverURL;
+const login = (appID, domain) => {
+  const serverURL = `${window.location.protocol}//${domain}`;
   const response_type = "code";
   const client_id = appID.client_id;
   const redirect_uri = appID.redirect_uri;
