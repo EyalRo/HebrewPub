@@ -47,8 +47,12 @@ async function genID() {
   await fetch(`${window.location.protocol}//${domain}/api/v1/apps`, {
     method: "POST",
     body: formData,
-  }).then((res) => {
-    console.log(res);
-    return res;
-  });
+  })
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      console.log(res);
+      return res;
+    });
 }
