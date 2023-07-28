@@ -21,7 +21,8 @@ export default LoginButton;
 const loginFunc = async () => {
   const url = `${window.location.protocol}//${window.location.host}`;
   let domain = new URL(url);
-  domain = domain.hostname.replace("heb.", "");
+  domain = domain.hostname.replace("heb.", "").replace("fedivri.", "");
+
   const appID = await genID(domain);
   if (appID) {
     login(appID, domain);

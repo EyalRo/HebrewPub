@@ -83,12 +83,6 @@ function TootSection() {
       round={true}
       margin="medium"
     >
-      <Button
-        icon={<Up />}
-        onClick={() => {
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        }}
-      />
 
       {Object.values(allToots).map((toot) => (
         <SingleToot toot={toot} key={toot.id} />
