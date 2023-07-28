@@ -28,7 +28,7 @@ const loginFunc = async () => {
   } else console.log("undefined?");
 };
 
-async function genID(domain) {
+const genID = (domain) => {
   const formData = new FormData();
 
   formData.append("client_name", "פדעברי: הפדיברס העברי");
@@ -41,7 +41,7 @@ async function genID(domain) {
     `${window.location.protocol}//${window.location.host}`
   );
 
-  await fetch(`${window.location.protocol}//${domain}/api/v1/apps`, {
+  fetch(`${window.location.protocol}//${domain}/api/v1/apps`, {
     method: "POST",
     body: formData,
   })
@@ -51,7 +51,7 @@ async function genID(domain) {
     .then(function (data) {
       return data;
     });
-}
+};
 
 const login = (appID, domain) => {
   const serverURL = `${window.location.protocol}//${domain}`;
