@@ -18,11 +18,11 @@ const LoginButton = () => {
 
 export default LoginButton;
 
-const loginFunc = async () => {
+const loginFunc = () => {
   const url = `${window.location.protocol}//${window.location.host}`;
   let domain = new URL(url);
   domain = domain.hostname.replace("heb.", "");
-  await genID(domain).then((appID) => {
+  genID(domain).then((appID) => {
     console.log(appID);
     // login(appID, domain);
   });
