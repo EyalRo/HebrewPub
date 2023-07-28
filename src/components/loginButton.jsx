@@ -44,11 +44,11 @@ async function genID() {
     `${window.location.protocol}//${window.location.host}`
   );
 
-  const response = await fetch(`${window.location.protocol}//${domain}/api/v1/apps`, {
+  await fetch(`${window.location.protocol}//${domain}/api/v1/apps`, {
     method: "POST",
     body: formData,
+  }).then((res) => {
+    console.log(res);
+    return res;
   });
-
-  console.log(response);
-  return(response)
 }
