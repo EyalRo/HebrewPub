@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { clearToken } from "../features/toots/allTootSlice";
 
 const LoginButton = () => {
-  const serverURL = `${window.location.protocol}//${window.location.host}`;
+  const serverURL = `${window.location.protocol}//${window.location.host.replace("heb.", "")}`;
   const response_type = "code";
   const client_id = "7vD5-BJ20Kb1pefqWCuPwqEW406UzXV_TRg_OYSxLpE";
   const redirect_uri = `${window.location.protocol}//${window.location.host}`;
@@ -14,6 +14,9 @@ const LoginButton = () => {
 
   const dispatch = useDispatch();
   const loginCode = useSelector((state) => state.allToots.loginToken);
+
+  const appID = genID();
+  console.log(appID);
 
   useEffect(() => {
     genID();
@@ -52,7 +55,6 @@ async function genID() {
       return response.json();
     })
     .then(function (data) {
-      console.log(data);
       return data;
     });
 }
