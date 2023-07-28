@@ -7,12 +7,13 @@ import {
 } from "../features/toots/allTootSlice";
 import SingleToot from "../components/singleToot";
 import { useQueries, useQuery } from "react-query";
-import { Box, Layer, Spinner, Text } from "grommet";
+import { Box, Button, Layer, Spinner, Text } from "grommet";
 import {
   fetchHomeByServer,
   fetchTootsByServer,
   serverList,
 } from "./tootFunctions";
+import { Up } from "grommet-icons";
 
 function TootSection() {
   // redux hooks
@@ -85,8 +86,31 @@ function TootSection() {
       {Object.values(allToots).map((toot) => (
         <SingleToot toot={toot} key={toot.id} />
       ))}
+
+      {/* Up Button */}
+      <Layer
+        position="bottom-left"
+        animation="fadeIn"
+        responsive={false}
+        modal={false}
+      >
+        <Button
+          icon={<Up />}
+          onClick={() => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+        />
+      </Layer>
+
+      {/* Spinner when loading new posts*/}
       {isLoading && (
-        <Layer position="bottom-right" animation="fadeIn">
+        <Layer
+          position="bottom-right"
+          animation="fadeIn"
+          responsive={false}
+          modal={false}
+          margin="large"
+        >
           <Spinner />
         </Layer>
       )}
