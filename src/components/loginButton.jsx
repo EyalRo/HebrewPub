@@ -44,7 +44,7 @@ async function genID() {
     `${window.location.protocol}//${window.location.host}`
   );
 
-  const response = await fetch(`${window.location.protocol}//${domain}`, {
+  const response = await fetch(`${window.location.protocol}//${domain}/api/v1/apps`, {
     method: "POST",
     body: formData,
   });

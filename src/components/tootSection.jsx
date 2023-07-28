@@ -83,24 +83,16 @@ function TootSection() {
       round={true}
       margin="medium"
     >
+      <Button
+        icon={<Up />}
+        onClick={() => {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }}
+      />
+
       {Object.values(allToots).map((toot) => (
         <SingleToot toot={toot} key={toot.id} />
       ))}
-
-      {/* Up Button */}
-      <Layer
-        position="bottom-left"
-        animation="fadeIn"
-        responsive={false}
-        modal={false}
-      >
-        <Button
-          icon={<Up />}
-          onClick={() => {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }}
-        />
-      </Layer>
 
       {/* Spinner when loading new posts*/}
       {isLoading && (
