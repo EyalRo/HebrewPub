@@ -29,25 +29,25 @@ const LoginButton = () => {
 export default LoginButton;
 
 async function genID() {
+  let domain = new URL(`${window.location.protocol}//${window.location.host}`);
+  domain = domain.hostname.replace("heb.", "");
+
   const formData = new FormData();
 
   formData.append("client_name", "פדעברי: הפדיברס העברי");
   formData.append(
     "redirect_uris",
-    `${window.location.protocol}//heb.${window.location.host}`
+    `${window.location.protocol}//${window.location.host}`
   );
   formData.append(
     "website",
-    `${window.location.protocol}//heb.${window.location.host}`
+    `${window.location.protocol}//${window.location.host}`
   );
 
-  const response = await fetch(
-    `${window.location.protocol}//${window.location.host}`,
-    {
-      method: "POST",
-      body: formData,
-    }
-  );
+  const response = await fetch(`${window.location.protocol}//${domain}`, {
+    method: "POST",
+    body: formData,
+  });
 
   console.log(response.data);
 }
