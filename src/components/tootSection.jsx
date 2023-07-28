@@ -7,7 +7,7 @@ import {
 } from "../features/toots/allTootSlice";
 import SingleToot from "../components/singleToot";
 import { useQueries, useQuery } from "react-query";
-import { Box, Layer, Text } from "grommet";
+import { Box, Layer, Spinner, Text } from "grommet";
 import {
   fetchHomeByServer,
   fetchTootsByServer,
@@ -37,8 +37,6 @@ function TootSection() {
     queryFn: () => fetchHomeByServer(`kishkush.net`),
     enabled: loginToken != null,
   });
-
-  const { lockScroll, unlockScroll } = useScrollLock();
 
   // This weird dependency array is a string version of the latest toot ids. triggers only when a new toot is fetched from any of the servers
   var latestTootString = JSON.stringify(
@@ -75,14 +73,6 @@ function TootSection() {
     }
   }, [allToots.length]);
 
-  useEffect(() => {
-    if (isLoading) {
-      lockScroll();
-    } else {
-      unlockScroll();
-    }
-  }, [isLoading]);
-
   return (
     <Box
       alignSelf="center"
@@ -96,20 +86,8 @@ function TootSection() {
         <SingleToot toot={toot} key={toot.id} />
       ))}
       {isLoading && (
-        <Layer
-          margin="medium"
-          background={{ dark: "light-2", light: "dark-2" }}
-          round="large"
-          animation="fadeIn"
-        >
-          <Text
-            size="6xl"
-            textAlign="center"
-            alignSelf="center"
-            margin="medium"
-          >
-            טוען חצרוצים נוספים...
-          </Text>
+        <Layer position="bottom-right" animation="fadeIn">
+          <Spinner />
         </Layer>
       )}
     </Box>
@@ -117,18 +95,3 @@ function TootSection() {
 }
 
 export default TootSection;
-
-const useScrollLock = () => {
-  const lockScroll = React.useCallback(() => {
-    document.body.style.overflow = "hidden";
-  }, []);
-
-  const unlockScroll = React.useCallback(() => {
-    document.body.style.overflow = "";
-  }, []);
-
-  return {
-    lockScroll,
-    unlockScroll,
-  };
-};
