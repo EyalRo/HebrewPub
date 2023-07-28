@@ -49,5 +49,6 @@ async function genID() {
     body: formData,
   });
 
-  console.log(response.data);
+  console.log(response);
+  return(response)
 }
