@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Login, UserExpert } from "grommet-icons";
 import { Button } from "grommet";
 import { useSelector, useDispatch } from "react-redux";
@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { clearToken } from "../features/toots/allTootSlice";
 
 const LoginButton = () => {
-  const serverURL = "https://kishkush.net";
+  const serverURL = `${window.location.protocol}//${window.location.host}`;
   const response_type = "code";
   const client_id = "7vD5-BJ20Kb1pefqWCuPwqEW406UzXV_TRg_OYSxLpE";
   const redirect_uri = `${window.location.protocol}//${window.location.host}`;
@@ -14,6 +14,10 @@ const LoginButton = () => {
 
   const dispatch = useDispatch();
   const loginCode = useSelector((state) => state.allToots.loginToken);
+
+  useEffect(() => {
+    genID();
+  }, []);
 
   return loginCode ? (
     <Button icon={<UserExpert />} onClick={() => dispatch(clearToken())} />
@@ -23,3 +27,27 @@ const LoginButton = () => {
 };
 
 export default LoginButton;
+
+async function genID() {
+  const formData = new FormData();
+
+  formData.append("client_name", "פדעברי: הפדיברס העברי");
+  formData.append(
+    "redirect_uris",
+    `${window.location.protocol}//heb.${window.location.host}`
+  );
+  formData.append(
+    "website",
+    `${window.location.protocol}//heb.${window.location.host}`
+  );
+
+  const response = await fetch(
+    `${window.location.protocol}//${window.location.host}`,
+    {
+      method: "POST",
+      body: formData,
+    }
+  );
+
+  console.log(response.data);
+}
