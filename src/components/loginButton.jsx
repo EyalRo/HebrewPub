@@ -41,16 +41,16 @@ const genID = async (domain) => {
     `${window.location.protocol}//${window.location.host}`
   );
 
-  fetch(`${window.location.protocol}//${domain}/api/v1/apps`, {
-    method: "POST",
-    body: formData,
-  })
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (data) {
-      return data;
-    });
+  const response = await fetch(
+    `${window.location.protocol}//${domain}/api/v1/apps`,
+    {
+      method: "POST",
+      body: formData,
+    }
+  );
+
+  const appID = await response.json();
+  return appID;
 };
 
 const login = (appID, domain) => {
