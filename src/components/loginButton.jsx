@@ -24,8 +24,8 @@ const loginFunc = async () => {
   domain = domain.hostname.replace("heb.", "");
   const appID = await genID(domain);
   if (appID) {
-    console.log(appID);
-  } else console.log("undefined?");
+    login(appID, domain);
+  } else console.error(`Cannot generate app ID on server ${domain}`);
 };
 
 const genID = async (domain) => {
