@@ -52,7 +52,7 @@ async function genID() {
       return response.json();
     })
     .then(function (data) {
-      console.log(res);
-      return res;
+      console.log(data);
+      return data;
     });
 }
