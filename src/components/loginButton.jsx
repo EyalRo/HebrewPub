@@ -22,8 +22,11 @@ const loginFunc = async () => {
   const url = `${window.location.protocol}//${window.location.host}`;
   let domain = new URL(url);
   domain = domain.hostname.replace("heb.", "");
-  const appID = await genID(domain);
-  login(appID, domain);
+  await genID(domain).then((appID) => {
+    console.log(appID);
+    console.log(domain);
+    login(appID, domain);
+  });
 };
 
 async function genID(domain) {
