@@ -6,6 +6,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { clearToken } from "../features/toots/allTootSlice";
 
 const LoginButton = () => {
+
+async () => {
+  const appID = await genID()
+  console.log(appID)
+}
+
   const serverURL = `${window.location.protocol}//${window.location.host.replace("heb.", "")}`;
   const response_type = "code";
   const client_id = "7vD5-BJ20Kb1pefqWCuPwqEW406UzXV_TRg_OYSxLpE";
@@ -14,13 +20,6 @@ const LoginButton = () => {
 
   const dispatch = useDispatch();
   const loginCode = useSelector((state) => state.allToots.loginToken);
-
-  const appID = genID();
-  console.log(appID);
-
-  useEffect(() => {
-    genID();
-  }, []);
 
   return loginCode ? (
     <Button icon={<UserExpert />} onClick={() => dispatch(clearToken())} />
