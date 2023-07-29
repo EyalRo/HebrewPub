@@ -26,6 +26,7 @@ import Attachment from "./attachment";
 import parse from "html-react-parser";
 
 import "./designFix.scss";
+import TootFooter from "./tootFooter";
 
 const EmbedEmojis = ({ content, emojis }) => {
   const emojiDict = emojis.reduce((dict, emoji) => {
@@ -192,14 +193,7 @@ const SingleToot = ({ toot }) => {
           </Accordion>
         )}
       </CardBody>
-
-      <CardFooter margin={{ top: "medium" }}>
-        <Box direction="row" width="medium" justify="evenly">
-          <Text>{`חיבובים: ${toot.favourites_count}`}</Text>
-          <Text>{`תגובות: ${toot.replies_count}`}</Text>
-          <Text>{`הדהודים: ${toot.reblogs_count}`}</Text>
-        </Box>
-      </CardFooter>
+      <TootFooter toot={toot} />
     </Card>
   );
 };
