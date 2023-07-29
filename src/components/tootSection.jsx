@@ -13,7 +13,6 @@ import {
   fetchTootsByServer,
   serverList,
 } from "./tootFunctions";
-import { Up } from "grommet-icons";
 
 function TootSection() {
   // redux hooks
