@@ -19,7 +19,7 @@ const TootFooter = (payload) => {
           }}
         >
           <Stack anchor="bottom-right">
-            <Favorite size={liked?"large":"medium"} color="Red" />
+            <Favorite size={liked ? "large" : "medium"} color="Red" />
             <Box
               margin={{ horizontal: "small" }}
               pad={{ horizontal: "xsmall" }}
@@ -68,3 +68,14 @@ const TootFooter = (payload) => {
 };
 
 export default TootFooter;
+
+const favourite = async (tootID, token) => {
+  const domain = `kishkush.net`
+  const response = await fetch(
+    `${window.location.protocol}//${domain}/api/v1/statuses/${tootID}/favourite`,
+    {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+};
