@@ -20,6 +20,7 @@ function TootSection() {
   const allToots = useSelector((state) => state.allToots.value);
   const isLoading = useSelector((state) => state.allToots.loading);
   const loginToken = useSelector((state) => state.allToots.loginToken);
+  const myURL = useSelector((state) => state.allToots.myURL);
 
   const dispatch = useDispatch();
 
@@ -34,8 +35,8 @@ function TootSection() {
   );
 
   const homeQuery = useQuery({
-    queryKey: ["home", "hardCodedKishkush"],
-    queryFn: () => fetchHomeByServer(`kishkush.net`),
+    queryKey: ["home", myURL],
+    queryFn: () => fetchHomeByServer(myURL),
     enabled: loginToken != null,
   });
 
@@ -83,7 +84,6 @@ function TootSection() {
       round={true}
       margin="medium"
     >
-
       {Object.values(allToots).map((toot) => (
         <SingleToot toot={toot} key={toot.id} />
       ))}

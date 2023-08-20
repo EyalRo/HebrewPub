@@ -3,7 +3,7 @@ import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 
 import { useSelector, useDispatch } from "react-redux";
-import { setToken, clearToken } from "./features/toots/allTootSlice";
+import { setToken, clearToken, setURL } from "./features/toots/allTootSlice";
 
 import {
   Grommet,
@@ -31,11 +31,15 @@ function App() {
   const loginCode = useSelector((state) => state.allToots.loginToken);
 
   useEffect(() => {
+    // Set my URL in state
+    const myURL = window.location.hostname;
+    setURL(myURL);
+
     // Get token from URL
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const urlCode = urlParams.get("code");
-    urlParams.delete("code") // TBD: Update the actual URL bar
+    urlParams.delete("code"); // TBD: Update the actual URL bar
 
     // Get token from local storage
     const storedCode = localStorage.getItem("Fedicode");

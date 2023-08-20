@@ -1,5 +1,8 @@
 //////////////////////////////
 // List of Fedivri Servers  //
+
+import { clearToken, setURL } from "../features/toots/allTootSlice";
+
 //////////////////////////////
 export const serverList = [
   "tooot.im",
@@ -31,15 +34,21 @@ export const fetchOldTootsByServer = async (server, pointer) => {
   return data;
 };
 
-export const fetchHomeByServer = async (server, code) => {
-  const res = await fetch(`https://${server}/api/v1/timelines/home`, {
-    headers: {
-      Authorization: `Bearer ${code}`,
-    },
-  });
-  const data = await res.json();
-  return data;
-};
+try {
+ fetchHomeByServer = async (server, code) => {
+    const res = await fetch(`https://${server}/api/v1/timelines/home`, {
+      headers: {
+        Authorization: `Bearer ${code}`,
+      },
+    });
+    const data = await res.json();
+    return data;
+  };
+} catch (error) {
+  alert(error);
+  clearToken();
+}
+export var fetchHomeByServer
 
 export const fetchOldHomeByServer = async (server, code, pointer) => {
   const res = await fetch(
