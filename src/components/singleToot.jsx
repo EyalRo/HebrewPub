@@ -13,6 +13,7 @@ import {
   Stack,
   Accordion,
   AccordionPanel,
+  List,
 } from "grommet";
 import {
   addToots,
@@ -36,6 +37,37 @@ const EmbedEmojis = ({ content, emojis }) => {
   return newContent;
 };
 
+const WrapListItem = ({ content, emojis }) => {
+  return (
+    <div>
+      {parse(EmbedEmojis({ content: content, emojis: emojis }))}
+    </div>
+  );
+};
+
+const MakeContent = ({ toot }) => {
+  const content = EmbedEmojis({ content: toot.content, emojis: toot.emojis });
+  const options = toot.poll != null ?
+    toot.poll.options.map(
+      option => ({
+        title: WrapListItem({ content: option.title, emojis: toot.poll.emojis }),
+        votes_count: option.votes_count
+      })) : null;
+
+  return (
+    <>
+    {parse(content)}
+    {toot.poll != null && (
+      <List
+        primaryKey="title"
+        secondaryKey="votes_count"
+        margin={{horizontal:"10%"}}
+        data={options}
+      />
+    )}
+    </>);
+};
+
 const SingleToot = ({ toot }) => {
   const oldest = useSelector((state) => state.allToots.oldest);
   ///const isLoading = useSelector((state)=> state.allToots.loading)
@@ -56,7 +88,7 @@ const SingleToot = ({ toot }) => {
     content: toot.account.display_name,
     emojis: toot.account.emojis,
   });
-  var content = EmbedEmojis({ content: toot.content, emojis: toot.emojis });
+  const content = (<MakeContent toot={toot}/>);
 
   useEffect(() => {
     setOldest(oldest.includes(toot.id));
@@ -140,8 +172,7 @@ const SingleToot = ({ toot }) => {
 
         {contentWarning == "" ? (
           <Button href={toot.url}>
-            <Text />
-            {parse(content)}
+            {content}
           </Button>
         ) : (
           <Box
@@ -234,7 +265,7 @@ const TootForContext = ({ toot }) => {
     content: toot.account.display_name,
     emojis: toot.account.emojis,
   });
-  var content = EmbedEmojis({ content: toot.content, emojis: toot.emojis });
+  const content = (<MakeContent toot={toot}/>);
 
   return (
     <>
@@ -256,7 +287,7 @@ const TootForContext = ({ toot }) => {
         <Box width="100%">
           {contentWarning == "" ? (
             <Button href={toot.url}>
-              <Text dangerouslySetInnerHTML={{ __html: content }} />
+              {content}
             </Button>
           ) : (
             <Button
