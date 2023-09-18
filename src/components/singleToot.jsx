@@ -37,8 +37,22 @@ const EmbedEmojis = ({ content, emojis }) => {
   return newContent;
 };
 
+const WrapListItem = ({ content, emojis }) => {
+  return (
+    <div>
+      {parse(EmbedEmojis({ content: content, emojis: emojis }))}
+    </div>
+  );
+};
+
 const MakeContent = ({ toot }) => {
-  var content = EmbedEmojis({ content: toot.content, emojis: toot.emojis });
+  const content = EmbedEmojis({ content: toot.content, emojis: toot.emojis });
+  const options = toot.poll != null ?
+    toot.poll.options.map(
+      option => ({
+        title: WrapListItem({ content: option.title, emojis: toot.poll.emojis }),
+        votes_count: option.votes_count
+      })) : null;
 
   return (
     <>
@@ -48,7 +62,7 @@ const MakeContent = ({ toot }) => {
         primaryKey="title"
         secondaryKey="votes_count"
         margin={{horizontal:"10%"}}
-        data={toot.poll.options}
+        data={options}
       />
     )}
     </>);
