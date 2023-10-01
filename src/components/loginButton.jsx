@@ -19,17 +19,16 @@ const LoginButton = () => {
 export default LoginButton;
 
 const loginFunc = async () => {
-  const url = `${window.location.protocol}//${window.location.host}`;
-  let domain = new URL(url);
-  domain = domain.hostname.replace("heb.", "").replace("fedivri.", "");
+  const domain = window.location.hostname.replace("heb.", "").replace("fedivri.", "");
+  const homeInstanceURL = `https://${domain}`
 
-  const appID = await genID(domain);
+  const appID = await genID(homeInstanceURL);
   if (appID) {
-    login(appID, domain);
+    login(appID, homeInstanceURL);
   } else console.error(`Cannot generate app ID on server ${domain}`);
 };
 
-const genID = async (domain) => {
+const genID = async (homeInstanceURL) => {
   const formData = new FormData();
 
   formData.append("client_name", "פדעברי: הפדיברס העברי");
@@ -43,7 +42,7 @@ const genID = async (domain) => {
   );
 
   const response = await fetch(
-    `${window.location.protocol}//${domain}/api/v1/apps`,
+    `${homeInstanceURL}/api/v1/apps`,
     {
       method: "POST",
       body: formData,
@@ -54,13 +53,12 @@ const genID = async (domain) => {
   return appID;
 };
 
-const login = (appID, domain) => {
-  const serverURL = `${window.location.protocol}//${domain}`;
+const login = (appID, homeInstanceURL) => {
   const response_type = "code";
   const client_id = appID.client_id;
   const redirect_uri = appID.redirect_uri;
 
-  const hrefTarget = `${serverURL}/oauth/authorize?response_type=${response_type}&client_id=${client_id}&redirect_uri=${redirect_uri}`;
+  const hrefTarget = `${homeInstanceURL}/oauth/authorize?response_type=${response_type}&client_id=${client_id}&redirect_uri=${redirect_uri}`;
 
   window.location.replace(hrefTarget);
 };
