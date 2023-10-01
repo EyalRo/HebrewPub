@@ -4,6 +4,7 @@ import { Button } from "grommet";
 import { useSelector, useDispatch } from "react-redux";
 
 import { clearToken } from "../features/toots/allTootSlice";
+import { getHomeInstanceURL } from "./tootFunctions";
 
 const LoginButton = () => {
   const dispatch = useDispatch();
@@ -19,13 +20,11 @@ const LoginButton = () => {
 export default LoginButton;
 
 const loginFunc = async () => {
-  const domain = window.location.hostname.replace("heb.", "").replace("fedivri.", "");
-  const homeInstanceURL = `https://${domain}`
-
+  const homeInstanceURL = getHomeInstanceURL();
   const appID = await genID(homeInstanceURL);
   if (appID) {
     login(appID, homeInstanceURL);
-  } else console.error(`Cannot generate app ID on server ${domain}`);
+  } else console.error(`Cannot generate app ID on server ${homeInstanceURL}`);
 };
 
 const genID = async (homeInstanceURL) => {

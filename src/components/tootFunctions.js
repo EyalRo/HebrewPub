@@ -68,3 +68,10 @@ export const replaceTokens = (text, urlMap) => {
   });
   return result;
 };
+
+export const getHomeInstanceURL = () => {
+  const domain = window.location.hostname.replace("heb.", "").replace("fedivri.", "");
+  const homeInstanceURL = `https://${domain}`;
+
+  return (serverList.includes(domain)) ? homeInstanceURL : null;
+}
