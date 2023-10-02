@@ -74,4 +74,11 @@ export const getHomeInstanceURL = () => {
   const homeInstanceURL = `https://${domain}`;
 
   return (serverList.includes(domain)) ? homeInstanceURL : null;
-}
+};
+
+export const interactURL = (url) => {
+  const homeInstanceURL = getHomeInstanceURL();
+  return (homeInstanceURL != null && !url.startsWith(homeInstanceURL))
+    ? `${homeInstanceURL}/authorize_interaction?uri=${url}`
+    : url;
+};
