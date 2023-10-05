@@ -21,7 +21,7 @@ import {
   startLoading,
   stopLoading,
 } from "../features/toots/allTootSlice";
-import { fetchOldTootsByServer, replaceTokens } from "./tootFunctions";
+import { fetchOldTootsByServer, interactURL, replaceTokens } from "./tootFunctions";
 import useOnScreen from "./useOnScreen";
 import Attachment from "./attachment";
 import parse from "html-react-parser";
@@ -89,6 +89,8 @@ const SingleToot = ({ toot }) => {
     emojis: toot.account.emojis,
   });
   const content = (<MakeContent toot={toot}/>);
+  const accountURL = interactURL(toot.account.url);
+  const tootURL = interactURL(toot.url);
 
   useEffect(() => {
     setOldest(oldest.includes(toot.id));
@@ -123,7 +125,7 @@ const SingleToot = ({ toot }) => {
       round={false}
     >
       {/* Account & Toot Details */}
-      <Button href={toot.account.url}>
+      <Button href={accountURL}>
         <CardHeader dir="ltr" pad={{ bottom: "small" }}>
           <Box width="48px" flex={false}>
             <Avatar src={toot.account.avatar} />
@@ -171,8 +173,8 @@ const SingleToot = ({ toot }) => {
         )}
 
         {contentWarning == "" ? (
-          <Button href={toot.url}>
-            {content}
+      <Button href={tootURL}>
+      {content}
           </Button>
         ) : (
           <Box
@@ -266,12 +268,14 @@ const TootForContext = ({ toot }) => {
     emojis: toot.account.emojis,
   });
   const content = (<MakeContent toot={toot}/>);
+  const accountURL = interactURL(toot.account.url);
+  const tootURL = interactURL(toot.url);
 
   return (
     <>
       <Box direction="row" margin="xsmall">
         {/* Account & Toot Details */}
-        <Button href={toot.account.url}>
+        <Button href={accountURL}>
           <Box dir="ltr" pad="small" width="xsmall" margin={{ top: "18px" }}>
             <Avatar src={toot.account.avatar} alignSelf="end" />
             <Box>
@@ -286,8 +290,8 @@ const TootForContext = ({ toot }) => {
         {/* Toot Content*/}
         <Box width="100%">
           {contentWarning == "" ? (
-            <Button href={toot.url}>
-              {content}
+      <Button href={tootURL}>
+      {content}
             </Button>
           ) : (
             <Button
