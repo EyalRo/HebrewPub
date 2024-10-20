@@ -6,6 +6,7 @@
 מקום לקרוא (את רוב?) הפיד העברי בפדיוורס/מסטודון - ניתן למצוא בכתובות:
 https://heb.kishkush.net/
 https://fedivri.hed.im/
+https://hebpub.vercel.app/
 
 ## הוראות התקנה בקטנה
 ```
