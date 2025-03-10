@@ -11,7 +11,7 @@ import { Box, Button, Layer, Spinner, Text } from "grommet";
 import {
   fetchHomeByServer,
   fetchTootsByServer,
-  serverList,
+  mastodonServerList,
 } from "./tootFunctions";
 import { Up } from "grommet-icons";
 
@@ -26,7 +26,7 @@ function TootSection() {
 
   // react-query hooks
   const serverQueries = useQueries(
-    serverList.map((server) => {
+    mastodonServerList.map((server) => {
       return {
         queryKey: ["server", server],
         queryFn: () => fetchTootsByServer(server),
@@ -56,7 +56,7 @@ function TootSection() {
 
   useEffect(() => {
     // update oldest and newest toots
-    for (let server of serverList) {
+    for (let server of mastodonServerList) {
       try {
         const oldestToot = allToots
           .filter((toot) => new URL(toot.url).hostname === server)

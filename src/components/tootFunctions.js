@@ -4,7 +4,7 @@
 import { clearToken, setURL } from "../features/toots/allTootSlice";
 
 //////////////////////////////
-export const serverList = [
+export const mastodonServerList = [
   "tooot.im",
   "kishkush.net",
   "hed.im",
@@ -73,7 +73,7 @@ export const getHomeInstanceURL = () => {
   const domain = window.location.hostname.replace("heb.", "").replace("fedivri.", "");
   const homeInstanceURL = `https://${domain}`;
 
-  return (serverList.includes(domain)) ? homeInstanceURL : null;
+  return (mastodonServerList.includes(domain)) ? homeInstanceURL : null;
 };
 
 export const interactURL = (url) => {
