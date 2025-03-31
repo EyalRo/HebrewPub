@@ -173,7 +173,7 @@ const SingleToot = ({ toot }) => {
         )}
 
         {contentWarning == "" ? (
-      <Button href={tootURL}>
+      <Button dir="auto" href={tootURL}>
       {content}
           </Button>
         ) : (
