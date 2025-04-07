@@ -107,6 +107,50 @@ const Attachment = ({ attachment, contentWarning }) => {
         )}
       </Box>
     );
+  } else if (attachment.type === "embed") {
+    return (
+      <Box
+        overflow="hidden"
+        margin="xsmall"
+        flex="shrink"
+        round="5px"
+        height={{ min: "small", max: "medium" }}
+      >
+        <Button
+          secondary
+          alignSelf="center"
+          onClick={() => {
+            setShowModal(true);
+          }}
+        >
+          {contentWarning ? (
+            <Blurhash
+              hash={attachment.blurhash}
+              width={attachment.meta.small.width}
+              height={attachment.meta.small.height}
+              resolutionX={32}
+              resolutionY={32}
+              punch={1}
+            />
+          ) : (
+            <Image fit="cover" src={attachment.preview_url} />
+          )}
+        </Button>
+      
+        {showModal && (
+          <Layer
+            onEsc={() => setShowModal(false)}
+            onClickOutside={() => setShowModal(false)}
+          >
+            <Button onClick={() => setShowModal(false)}>
+              <Box height="90vh" width="90vw">
+                <iframe width="100%" height="100%" src={attachment.embed} frameborder="0" allowfullscreen="" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"/>
+              </Box>
+            </Button>
+          </Layer>
+        )}
+      </Box>
+    );
   } else {
     return (
       <Text

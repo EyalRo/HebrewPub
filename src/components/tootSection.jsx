@@ -11,7 +11,9 @@ import { Box, Button, Layer, Spinner, Text } from "grommet";
 import {
   fetchHomeByServer,
   fetchTootsByServer,
+  fetchTubesByServer,
   mastodonServerList,
+  peertubeServerList,
 } from "./tootFunctions";
 import { Up } from "grommet-icons";
 
@@ -25,14 +27,20 @@ function TootSection() {
   const dispatch = useDispatch();
 
   // react-query hooks
-  const serverQueries = useQueries(
-    mastodonServerList.map((server) => {
-      return {
-        queryKey: ["server", server],
-        queryFn: () => fetchTootsByServer(server),
-      };
-    })
-  );
+  const mastodonQueries = mastodonServerList.map((server) => {
+    return {
+      queryKey: ["server", server],
+      queryFn: () => fetchTootsByServer(server),
+    };
+  });
+  const peertubeQueries = peertubeServerList.map((server) => {
+    return {
+      queryKey: ["server", server],
+      queryFn: () => fetchTubesByServer(server),
+    };
+  });
+
+  const serverQueries = useQueries([...mastodonQueries, ...peertubeQueries]);
 
   const homeQuery = useQuery({
     queryKey: ["home", myURL],
