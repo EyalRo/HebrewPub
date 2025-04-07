@@ -20,7 +20,7 @@ import { deepMerge } from "grommet/utils";
 import { Moon, Sun, UserExpert } from "grommet-icons";
 
 import TootSection from "./components/tootSection";
-import { serverList } from "./components/tootFunctions";
+import { mastodonServerList } from "./components/tootFunctions";
 import LoginButton from "./components/loginButton";
 
 function App() {
@@ -84,7 +84,7 @@ function App() {
                 margin="small"
                 wrap={true}
               >
-                {serverList
+                {mastodonServerList
                   .filter((server) => server != `tooot.im`)
                   .sort(() => Math.random() - 0.5)
                   .map((server) => (

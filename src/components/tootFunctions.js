@@ -4,7 +4,7 @@
 import { clearToken, setURL } from "../features/toots/allTootSlice";
 
 //////////////////////////////
-export const serverList = [
+export const mastodonServerList = [
   "tooot.im",
   "kishkush.net",
   "hed.im",
@@ -12,6 +12,10 @@ export const serverList = [
   "leftodon.social",
   "reshet.social",
   "toot.org.il",
+];
+
+export const peertubeServerList = [
+  "tube.shela.nu",
 ];
 
 //////////////////////////////
@@ -26,6 +30,42 @@ export const fetchTootsByServer = async (server) => {
   return data;
 };
 
+const convertVideoToToot = (video) => {
+  return {
+    source: "peertube",
+    created_at: video.createdAt,
+    favourites_count: video.likes,
+    replies_count: "N/A",
+    reblogs_count: "N/A",
+    id: video.id.toString(),
+    spoiler_text: "",
+    emojis: [],
+    content: video.name,
+    url: video.url,
+    account: {
+      display_name: video.account.displayName,
+      emojis: [],
+      url: video.account.url,
+      username: video.account.name,
+      avatar: `https://${video.account.host}${video.account.avatars[0].path}`,
+    },
+    media_attachments: [{
+      type: "embed",
+      preview_url: `https://${video.account.host}${video.previewPath}`,
+      embed: `https://${video.account.host}${video.embedPath}`,
+    }],
+  };
+};
+
+export const fetchTubesByServer = async (server) => {
+  const res = await fetch(
+    `https://${server}/api/v1/videos`
+  );
+  const data = (await res.json()).data;
+  const updatedItems = data.map(video => convertVideoToToot(video));
+  return updatedItems;
+};
+      
 export const fetchOldTootsByServer = async (server, pointer) => {
   const res = await fetch(
     `https://${server}/api/v1/timelines/public?local=true&max_id=${pointer}`
@@ -73,7 +113,7 @@ export const getHomeInstanceURL = () => {
   const domain = window.location.hostname.replace("heb.", "").replace("fedivri.", "");
   const homeInstanceURL = `https://${domain}`;
 
-  return (serverList.includes(domain)) ? homeInstanceURL : null;
+  return (mastodonServerList.includes(domain)) ? homeInstanceURL : null;
 };
 
 export const interactURL = (url) => {

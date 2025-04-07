@@ -104,7 +104,7 @@ const SingleToot = ({ toot }) => {
   }, [JSON.stringify(oldest), onScreen]);
 
   useEffect(() => {
-    contextMissing &&
+    contextMissing && toot.source == null &&
       getContext(toot)
         .then((res) => setContext(res))
         .then(setContextMissing(false));
