@@ -39,7 +39,6 @@ const convertVideoToToot = (video) => {
     reblogs_count: "N/A",
     id: video.id.toString(),
     spoiler_text: "",
-    media_attachments: [],
     emojis: [],
     content: video.name,
     url: video.url,
