@@ -51,6 +51,7 @@ const convertVideoToToot = (video) => {
     },
     media_attachments: [{
       type: "embed",
+      description: video.description,
       preview_url: `https://${video.account.host}${video.previewPath}`,
       embed: `https://${video.account.host}${video.embedPath}`,
     }],

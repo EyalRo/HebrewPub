@@ -39,7 +39,7 @@ const Attachment = ({ attachment, contentWarning }) => {
               punch={1}
             />
           ) : (
-            <Image src={attachment.preview_url} fill={true} />
+            <Image src={attachment.preview_url} fill={true} title={attachment.description}/>
           )}
         </Button>
 
@@ -133,7 +133,7 @@ const Attachment = ({ attachment, contentWarning }) => {
               punch={1}
             />
           ) : (
-            <Image fit="cover" src={attachment.preview_url} />
+            <Image fit="cover" src={attachment.preview_url} title={attachment.description}/>
           )}
         </Button>
       
