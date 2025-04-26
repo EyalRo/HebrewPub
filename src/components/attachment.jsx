@@ -151,6 +151,21 @@ const Attachment = ({ attachment, contentWarning }) => {
         )}
       </Box>
     );
+  } else if (attachment.type === "audio") {
+    return (
+      <Box
+        overflow="hidden"
+        margin="xsmall"
+        flex="shrink"
+        round="5px"
+        width="90%"
+      >
+        <audio controls>
+          <source src={attachment.url} type="audio/mpeg"/>
+          Your browser does not support the audio tag.
+        </audio>
+      </Box>
+    );
   } else {
     return (
       <Text
