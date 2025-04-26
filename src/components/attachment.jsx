@@ -158,7 +158,7 @@ const Attachment = ({ attachment, contentWarning }) => {
         margin="xsmall"
         flex="shrink"
         round="5px"
-        width="60%"
+        width="90%"
       >
         <audio controls>
           <source src={attachment.url} type="audio/mpeg"/>
